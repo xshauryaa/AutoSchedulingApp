@@ -6,6 +6,7 @@ import java.util.Date;
  * Represents an event or task to be scheduled in the calendar.
  */
 public abstract class Event {
+    
     private Date date; // The date of the event
     private Priority priority; // The priority of the event
     private ActivityType type; // The type of activity of the event or task
