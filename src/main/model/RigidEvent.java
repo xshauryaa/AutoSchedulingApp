@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 public class RigidEvent extends Event {
     
     private int startTime; // The start time of the event in 24-hour format
@@ -16,34 +18,36 @@ public class RigidEvent extends Event {
      * @param endTime the end time of the event in 24-hour format
      */
     public RigidEvent(String name, Date date, ActivityType type, Priority priority, int duration, int startTime, int endTime) {
-        // TODO: Implement constructor
+        super(name, date, type, priority, duration);
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     /**
      * @return the start time of the event in 24-hour format.
      */
     public int getStartTime() {
-        return 0; // TODO: Implement method
+        return this.startTime;
     }
 
     /**
      * @return the end time of the event in 24-hour format.
      */
     public int getEndTime() {
-        return 0; // TODO: Implement method
+        return this.endTime;
     }
 
     /**
      * @param startTime the new start time of the event in 24-hour format
      */
     public void setStartTime(int startTime) {
-        // TODO: Implement method
+        this.startTime = startTime;
     }
 
     /**
      * @param endTime the new end time of the event in 24-hour format
      */
     public void setEndTime(int endTime) {
-        // TODO: Implement method
+        this.endTime = endTime;
     }
 }
