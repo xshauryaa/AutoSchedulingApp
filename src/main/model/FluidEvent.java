@@ -16,20 +16,21 @@ public class FluidEvent extends Event {
      * @param deadline the deadline of the event
      */
     public FluidEvent(String name, Date date, ActivityType type, Priority priority, int duration, Date deadline) {
-        // TODO: Implement constructor
+        super(name, date, type, priority, duration);
+        this.deadline = deadline;
     }
 
     /**
      * @return the deadline of the event.
      */
     public Date getDeadline() {
-        return null; // TODO: Implement method
+        return this.deadline;
     }
 
     /**
      * @param deadline the new deadline of the event
      */
     public void setDeadline(Date deadline) {
-        // TODO: Implement method
+        this.deadline = deadline;
     }
 }
