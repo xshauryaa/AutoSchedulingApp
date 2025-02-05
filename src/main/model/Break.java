@@ -38,4 +38,20 @@ public class Break {
     public int getEndTime() {
         return this.endTime;
     }
+
+    /**
+     * @param obj the object to compare with
+     * @return true if the object is a break with the same duration, start time, and end time, false otherwise
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) { return true; }
+        else if (getClass() != obj.getClass()) { return false; }
+        else {
+            Break other = (Break) obj;
+            return this.duration == other.duration 
+                    && this.startTime == other.startTime 
+                    && this.endTime == other.endTime;
+        }
+    }
 }

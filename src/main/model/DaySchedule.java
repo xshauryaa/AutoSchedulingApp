@@ -126,7 +126,7 @@ public class DaySchedule implements Iterable<TimeBlock> {
      * @throws EventConflictException if the event overlaps with any other event or break 
      *                                or the total working hours exceed the working hours limit 
      */
-    public void addEvent(FluidEvent event, int startTime, int endTime) throws EventConflictException, WorkingLimitExceededException {
+    public void addEvent(FluidEvent event, Date date, int startTime, int endTime) throws EventConflictException, WorkingLimitExceededException {
         // TODO: implement method
     }
 

@@ -26,6 +26,7 @@ public class TimeBlockTest {
     @Test
     public void testTimeBlockRigidEvent() {
         timeBlock = new TimeBlock(rigidEvent);
+        assertEquals("event", timeBlock.getName());
         assertEquals(date, timeBlock.getDate());
         assertEquals(1000, timeBlock.getStartTime());
         assertEquals(1200, timeBlock.getEndTime());
@@ -35,6 +36,7 @@ public class TimeBlockTest {
     @Test
     public void testTimeBlockFluidEvent() {
         timeBlock = new TimeBlock(fluidEvent, date, 1000, 1200);
+        assertEquals("event", timeBlock.getName());
         assertEquals(date, timeBlock.getDate());
         assertEquals(1000, timeBlock.getStartTime());
         assertEquals(1200, timeBlock.getEndTime());
@@ -44,6 +46,7 @@ public class TimeBlockTest {
     @Test
     public void testTimeBlockBreak() {
         timeBlock = new TimeBlock(breakTime, date);
+        assertEquals("Break", timeBlock.getName());
         assertEquals(date, timeBlock.getDate());
         assertEquals(900, timeBlock.getStartTime());
         assertEquals(920, timeBlock.getEndTime());

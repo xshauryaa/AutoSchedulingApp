@@ -42,6 +42,7 @@ public class TimeBlock {
      * EFFECTS: Creates a new time block for given break with its start and end times on given date.
      */
     public TimeBlock(Break breakTime, Date date) {
+        this.name = "Break";
         this.date = date;
         this.startTime = breakTime.getStartTime();
         this.endTime = breakTime.getEndTime();
