@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class TimeBlock {
     
+    private String name; // The name of the event
     private Date date; // date of the time block
     private int startTime; // start time of the time block in 24-hour format
     private int endTime; // end time of the time block in 24-hour format
@@ -14,6 +15,7 @@ public class TimeBlock {
      * EFFECTS: Creates a new time block for given rigid event with its start and end times.
      */
     public TimeBlock(RigidEvent event) {
+        this.name = event.getName();
         this.date = event.getDate();
         this.startTime = event.getStartTime();
         this.endTime = event.getEndTime();
@@ -26,8 +28,9 @@ public class TimeBlock {
      * @param endTime the end time of the time block
      * EFFECTS: Creates a new time block for given fluid event with given start and end times and type.
      */
-    public TimeBlock(FluidEvent event, int startTime, int endTime) {
-        this.date = event.getDate();
+    public TimeBlock(FluidEvent event, Date date, int startTime, int endTime) {
+        this.name = event.getName();
+        this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.type = "fluid";
@@ -43,6 +46,13 @@ public class TimeBlock {
         this.startTime = breakTime.getStartTime();
         this.endTime = breakTime.getEndTime();
         this.type = "break";
+    }
+
+    /**
+     * @return the name of the time block
+     */
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -74,15 +84,16 @@ public class TimeBlock {
     }
 
     /**
-     * @param timeBlock the time block to be compared
-     * @return true if the time block is equal to the given time block, false otherwise
+     * @param obj the object to be compared
+     * @return true if the object is equal to the given time block, false otherwise
      */
     public boolean equals(Object obj) {
         if (this == obj) { return true; }
         if (obj == null || getClass() != obj.getClass()) { return false; }
 
         TimeBlock timeBlock = (TimeBlock) obj;
-        return this.date.equals(timeBlock.getDate()) && this.startTime == timeBlock.getStartTime()
-                && this.endTime == timeBlock.getEndTime() && this.type.equals(timeBlock.getType());
+        return this.name.equals(timeBlock.getName()) && this.date.equals(timeBlock.getDate()) 
+                && this.startTime == timeBlock.getStartTime() && this.endTime == timeBlock.getEndTime()
+                && this.type.equals(timeBlock.getType());
     }
 }

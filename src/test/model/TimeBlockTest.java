@@ -18,8 +18,8 @@ public class TimeBlockTest {
     @BeforeEach
     public void runBefore() {
         date = new Date(01012021);
-        rigidEvent = new RigidEvent("event", date, ActivityType.EDUCATION, Priority.HIGH, 120, 1000, 1200);
-        fluidEvent = new FluidEvent("event", date, ActivityType.ERRAND, Priority.LOW, 60, new Date(05012021));
+        rigidEvent = new RigidEvent("event", ActivityType.EDUCATION, 120, date, 1000, 1200);
+        fluidEvent = new FluidEvent("event", ActivityType.ERRAND, 60, Priority.LOW, new Date(05012021));
         breakTime = new Break(20, 900, 920);
     }
     
@@ -34,7 +34,7 @@ public class TimeBlockTest {
     
     @Test
     public void testTimeBlockFluidEvent() {
-        timeBlock = new TimeBlock(fluidEvent, 1000, 1200);
+        timeBlock = new TimeBlock(fluidEvent, date, 1000, 1200);
         assertEquals(date, timeBlock.getDate());
         assertEquals(1000, timeBlock.getStartTime());
         assertEquals(1200, timeBlock.getEndTime());
