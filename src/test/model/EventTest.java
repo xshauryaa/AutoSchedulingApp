@@ -33,7 +33,7 @@ public class EventTest {
         assertEquals("Test Fluid Event", testFluidEvent.getName());
         assertEquals(ActivityType.EVENT, testFluidEvent.getType());
         assertEquals(Priority.HIGH, testFluidEvent.getPriority());
-        assertEquals(60, testFluidEvent.getDuration());
+        assertEquals(30, testFluidEvent.getDuration());
         assertEquals(new Date(0), testFluidEvent.getDeadline());
     }
 }

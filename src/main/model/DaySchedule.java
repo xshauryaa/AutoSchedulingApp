@@ -26,7 +26,13 @@ public class DaySchedule implements Iterable<TimeBlock> {
      * Default working hours limit is 12 hours
      */
     public DaySchedule(String day, Date date, int minGap) {
-        // TODO: implement constructor
+        this.day = day;
+        this.date = date;
+        this.minGap = minGap;
+        this.workingHoursLimit = 12;
+        this.events = new ArrayList<Event>();
+        this.breaks = new ArrayList<Break>();
+        this.timeBlocks = new ArrayList<TimeBlock>();
     }
 
     /**
@@ -38,68 +44,74 @@ public class DaySchedule implements Iterable<TimeBlock> {
      * EFFECTS: creates a new DaySchedule with given day, date, set gap, and working hours limit and no events or breaks
      */
     public DaySchedule(String day, Date date, int minGap, int workingHoursLimit) {
-        // TODO: implement constructor
+        this.day = day;
+        this.date = date;
+        this.minGap = minGap;
+        this.workingHoursLimit = workingHoursLimit;
+        this.events = new ArrayList<Event>();
+        this.breaks = new ArrayList<Break>();
+        this.timeBlocks = new ArrayList<TimeBlock>();
     }
 
     /**
      * @return the day of the week
      */
     public String getDay() {
-        return "";// TODO: implement method
+        return this.day;
     }
 
     /**
      * @return the date of the day
      */
     public Date getDate() {
-        return null; // TODO: implement method
+        return this.date;
     }
 
     /**
      * @return the list of events
      */
     public ArrayList<Event> getEvents() {
-        return null; // TODO: implement method
+        return this.events;
     }
 
     /**
      * @return the list of breaks
      */
     public ArrayList<Break> getBreaks() {
-        return null; // TODO: implement method
+        return this.breaks;
     }
 
     /**
      * @return the list of time blocks
      */
     public ArrayList<TimeBlock> getTimeBlocks() {
-        return null; // TODO: implement method
+        return this.timeBlocks;
     }
 
     /**
      * @return the gap between events
      */
     public int getMinGap() {
-        return 0; // TODO: implement method
+        return this.minGap;
     }
 
     /**
      * @return the maximum working hours per day
      */
     public int getWorkingHoursLimit() {
-        return 0; // TODO: implement method
+        return this.workingHoursLimit;
     }
 
     /**
+     * REQUIRES: limit > 0
      * @param limit the maximum working hours per day
-     * sets the maximum working hours per day
+     * EFFECTS: sets the maximum working hours per day
      */
     public void setWorkingHoursLimit(int limit) {
-        // TODO: implement method
+        this.workingHoursLimit = limit;
     }
 
     /**
-     * adds an event to the day schedule
      * REQUIRES: the event does not overlap with any other event or break &
      *           the total working hours of the day does not exceed the working hours limit
      * @param event the rigid event to be added
@@ -110,11 +122,18 @@ public class DaySchedule implements Iterable<TimeBlock> {
      *                                or the total working hours exceed the working hours limit 
      */
     public void addEvent(RigidEvent event) throws EventConflictException, WorkingLimitExceededException {
-        // TODO: implement method
+        if (checkEventConflict(event)) {
+            throw new EventConflictException();
+        } else if (event.getDuration() + (calculateWorkingHours() * 60) > (this.workingHoursLimit * 60)) {
+            throw new WorkingLimitExceededException();
+        } else {
+            this.events.add(event);
+            this.timeBlocks.add(new TimeBlock(event));
+            sortSchedule();
+        }
     }
 
     /**
-     * adds an event to the day schedule
      * REQUIRES: the event does not overlap with any other event or break &
      *           the total working hours of the day does not exceed the working hours limit
      * @param event the fluid event to be added
@@ -126,58 +145,128 @@ public class DaySchedule implements Iterable<TimeBlock> {
      * @throws EventConflictException if the event overlaps with any other event or break 
      *                                or the total working hours exceed the working hours limit 
      */
-    public void addEvent(FluidEvent event, Date date, int startTime, int endTime) throws EventConflictException, WorkingLimitExceededException {
-        // TODO: implement method
+    public void addEvent(FluidEvent event, int startTime, int endTime) throws EventConflictException, WorkingLimitExceededException {
+        if (checkEventConflict(event, startTime, endTime)) {
+            throw new EventConflictException();
+        } else if (event.getDuration() + (calculateWorkingHours() * 60) > (this.workingHoursLimit * 60)) {
+            throw new WorkingLimitExceededException();
+        } else {
+            this.events.add(event);
+            this.timeBlocks.add(new TimeBlock(event, this.date, startTime, endTime));
+            sortSchedule();
+        }
     }
 
     /**
-     * adds a break to the day schedule
-     * REQUIRES: no events must be added when adding a break
+     * REQUIRES: no events must be added before adding a break
      * @param breakTime the break to be added
      * MODIFIES: this
      * EFFECTS: adds the break to the list of breaks
      */
     public void addBreak(Break breakTime) {
-        // TODO: implement method
+        this.breaks.add(breakTime);
+        this.timeBlocks.add(new TimeBlock(breakTime, this.date));
+        sortSchedule();
     }
 
     /**
-     * removes an event from the day schedule
      * @param event the event to be removed
      * MODIFIES: this
      * EFFECTS: removes the event from the list of events
      */
     public void removeEvent(Event event) {
-        // TODO: implement method
+        this.events.remove(event);
+        for (TimeBlock tb : this.timeBlocks) {
+            if (tb.getName().equals(event.getName())) {
+                this.timeBlocks.remove(tb);
+                break;
+            }
+        }
     }
 
     /**
-     * removes a break from the day schedule
      * @param breakTime the break to be removed
      * MODIFIES: this
      * EFFECTS: removes the break from the list of breaks
      */
     public void removeBreak(Break breakTime) {
-        // TODO: implement method
+        this.breaks.remove(breakTime);
+        for (TimeBlock tb : this.timeBlocks) {
+            if (tb.getName().equals("Break")
+                    && tb.getStartTime() == breakTime.getStartTime()
+                    && tb.getEndTime() == breakTime.getEndTime()) {
+                this.timeBlocks.remove(tb);
+                break;
+            }
+        }
     }
 
     /**
      * @return the total working hours of the day
      */
     public int calculateWorkingHours() {
-        return 0; // TODO: implement method
+        int totalWorkingMinutes = 0;
+        for (Event event : this.events) {
+            if (event.getType() == ActivityType.EDUCATION || event.getType() == ActivityType.MEETING || event.getType() == ActivityType.WORK) {
+                totalWorkingMinutes += event.getDuration();
+            }
+        }
+        return totalWorkingMinutes / 60;
     }
 
     /**
-     * @param event the event to be checked for conflict
+     * @param event the rigid event to be checked for conflict
      * @return true if the event overlaps with any other event or break, false otherwise
      */
-    private boolean checkEventConflict(Event event) {
-        return false; // TODO: implement method
+    private boolean checkEventConflict(RigidEvent event) {
+        for (TimeBlock tb : this.timeBlocks) {
+            boolean condition1 = event.getStartTime() <= tb.getStartTime() && event.getEndTime() >= tb.getStartTime();
+            boolean condition2 = event.getStartTime() <= tb.getEndTime() && event.getEndTime() >= tb.getEndTime();
+            if (condition1 || condition2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param event the fluid event to be checked for conflict
+     * @param startTime the start time of the event
+     * @param endTime the end time of the event
+     * @return true if the event overlaps with any other event or break, false otherwise
+     */
+    private boolean checkEventConflict(FluidEvent event, int startTime, int endTime) {
+        for (TimeBlock tb : this.timeBlocks) {
+            boolean condition1 = startTime <= tb.getStartTime() && endTime >= tb.getStartTime();
+            boolean condition2 = startTime <= tb.getEndTime() && endTime >= tb.getEndTime();
+            if (condition1 || condition2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * EFFECTS: sorts the time blocks in chronological order
+     */
+    private void sortSchedule() {
+        ArrayList<TimeBlock> sortedTimeBlocks = new ArrayList<TimeBlock>();
+        for (TimeBlock timeBlock : this.timeBlocks) {
+            if (sortedTimeBlocks.isEmpty()) {
+                sortedTimeBlocks.add(timeBlock);
+            } else {
+                for (int i = 0; i < sortedTimeBlocks.size(); i++) {
+                    if (timeBlock.getStartTime() < sortedTimeBlocks.get(i).getStartTime()) {
+                        sortedTimeBlocks.add(i, timeBlock);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public Iterator<TimeBlock> iterator() {
-        return null; // TODO: implement method
+        return this.timeBlocks.iterator();
     }
 }

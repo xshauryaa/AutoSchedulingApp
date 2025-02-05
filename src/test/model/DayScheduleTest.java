@@ -60,7 +60,7 @@ public class DayScheduleTest {
     @Test
     void testAddValidFluidEvent() {
         try {
-            daySchedule.addEvent(fluidEvent, date, 1200, 1400);
+            daySchedule.addEvent(fluidEvent, 1200, 1400);
         } catch (EventConflictException e) {
             fail();
         } catch (WorkingLimitExceededException e) {
@@ -105,7 +105,7 @@ public class DayScheduleTest {
     void testAddFluidEventConflict() {
         try {
             daySchedule.addEvent(rigidEvent);
-            daySchedule.addEvent(fluidEvent, date, 1200, 1400);
+            daySchedule.addEvent(fluidEvent, 1200, 1400);
             fail();
         } catch (EventConflictException e) {
             // expected
@@ -124,8 +124,8 @@ public class DayScheduleTest {
         FluidEvent fluidEvent2 = new FluidEvent("Study", ActivityType.EDUCATION, 240, Priority.HIGH, deadline);
         try {
             daySchedule.addEvent(rigidEvent);
-            daySchedule.addEvent(fluidEvent, date, 1400, 1600);
-            daySchedule.addEvent(fluidEvent2, date, 1700, 1900);
+            daySchedule.addEvent(fluidEvent, 1400, 1600);
+            daySchedule.addEvent(fluidEvent2, 1700, 1900);
             fail();
         } catch (EventConflictException e) {
             fail();
@@ -169,7 +169,7 @@ public class DayScheduleTest {
     void testCalculateWorkingHours() {
         try {
             daySchedule.addEvent(rigidEvent);
-            daySchedule.addEvent(fluidEvent, date, 1400, 1600);
+            daySchedule.addEvent(fluidEvent, 1400, 1600);
         } catch (EventConflictException e) {
             fail();
         } catch (WorkingLimitExceededException e) {
@@ -182,7 +182,7 @@ public class DayScheduleTest {
     void testIterator() {
         try {
             daySchedule.addEvent(rigidEvent);
-            daySchedule.addEvent(fluidEvent, date, 1400, 1600);
+            daySchedule.addEvent(fluidEvent, 1400, 1600);
         } catch (EventConflictException e) {
             fail();
         } catch (WorkingLimitExceededException e) {
