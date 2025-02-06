@@ -1,15 +1,14 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.HashMap;
 
 import model.exceptions.EventConflictException;
 import model.exceptions.WorkingLimitExceededException;
 
-public class WeekSchedule implements Iterable<DaySchedule> {
+public class WeekSchedule {
     
-    private ArrayList<DaySchedule> weekSchedule;
+    private HashMap<String, DaySchedule> weekSchedule;
 
     /**
      * @param minGap the gap between events
@@ -32,7 +31,15 @@ public class WeekSchedule implements Iterable<DaySchedule> {
     /**
      * @return the list of schedules in the week
      */
-    public ArrayList<DaySchedule> getWeekSchedule() {
+    public HashMap<String, DaySchedule> getWeekSchedule() {
+        return null; // TODO: implement method
+    }
+
+    /**
+     * @param day the day for the schedule is to be retrieved
+     * @return the schedule for the specified day in the week
+     */
+    public DaySchedule getScheduleForDay(String day) {
         return null; // TODO: implement method
     }
 
@@ -88,10 +95,5 @@ public class WeekSchedule implements Iterable<DaySchedule> {
      */
     public double calculateTotalWorkingHours() {
         return 0; // TODO: implement method
-    }
-
-    @Override
-    public Iterator<DaySchedule> iterator() {
-        return null; // TODO: implement method
     }
 }
