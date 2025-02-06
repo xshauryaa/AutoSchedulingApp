@@ -120,6 +120,8 @@ public class DaySchedule implements Iterable<TimeBlock> {
      *          list of time blocks
      * @throws EventConflictException if the event overlaps with any other event or break 
      *                                or the total working hours exceed the working hours limit 
+     * @throws WorkingLimitExceededException if the total working hours exceed the working hours limit
+     *                                       after adding the event
      */
     public void addEvent(RigidEvent event) throws EventConflictException, WorkingLimitExceededException {
         if (checkEventConflict(event)) {
@@ -144,6 +146,8 @@ public class DaySchedule implements Iterable<TimeBlock> {
      *          list of time blocks
      * @throws EventConflictException if the event overlaps with any other event or break 
      *                                or the total working hours exceed the working hours limit 
+     * @throws WorkingLimitExceededException if the total working hours exceed the working hours limit
+     *                                       after adding the event
      */
     public void addEvent(FluidEvent event, int startTime, int endTime) throws EventConflictException, WorkingLimitExceededException {
         if (checkEventConflict(event, startTime, endTime)) {
