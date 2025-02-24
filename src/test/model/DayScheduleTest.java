@@ -2,8 +2,6 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Date;
-
 import org.junit.jupiter.api.Test;
 
 import model.exceptions.EventConflictException;
@@ -17,13 +15,13 @@ public class DayScheduleTest {
     private RigidEvent rigidEvent;
     private FluidEvent fluidEvent;
     private Break breakTime;
-    private Date date;
-    private Date deadline;
+    private ScheduleDate date;
+    private ScheduleDate deadline;
 
     @BeforeEach
     void runBefore() {
-        date = new Date(01012025);
-        deadline = new Date(050120205);
+        date = new ScheduleDate(1, 1, 2025);
+        deadline = new ScheduleDate(5, 1, 2025);
         daySchedule = new DaySchedule("Monday", date, 30, 6);
         rigidEvent = new RigidEvent("Meeting", ActivityType.MEETING, 60, date, 1200, 1300);
         fluidEvent = new FluidEvent("Study", ActivityType.EDUCATION, 120, Priority.HIGH, deadline);

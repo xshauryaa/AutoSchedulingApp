@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 
 import model.exceptions.EventConflictException;
@@ -10,7 +9,7 @@ import model.exceptions.WorkingLimitExceededException;
 public class DaySchedule implements Iterable<TimeBlock> {
     
     private String day; // day of the week
-    private Date date; // date of the day
+    private ScheduleDate date; // date of the day
     private ArrayList<Event> events; // list of events
     private ArrayList<Break> breaks; // list of breaks
     private ArrayList<TimeBlock> timeBlocks; // list of time blocks
@@ -25,7 +24,7 @@ public class DaySchedule implements Iterable<TimeBlock> {
      * EFFECTS: creates a new DaySchedule with given day and date, with set gap, and no events or breaks
      * Default working hours limit is 12 hours
      */
-    public DaySchedule(String day, Date date, int minGap) {
+    public DaySchedule(String day, ScheduleDate date, int minGap) {
         this.day = day;
         this.date = date;
         this.minGap = minGap;
@@ -43,7 +42,7 @@ public class DaySchedule implements Iterable<TimeBlock> {
      * @param workingHoursLimit the maximum working hours per day
      * EFFECTS: creates a new DaySchedule with given day, date, set gap, and working hours limit and no events or breaks
      */
-    public DaySchedule(String day, Date date, int minGap, int workingHoursLimit) {
+    public DaySchedule(String day, ScheduleDate date, int minGap, int workingHoursLimit) {
         this.day = day;
         this.date = date;
         this.minGap = minGap;
@@ -63,7 +62,7 @@ public class DaySchedule implements Iterable<TimeBlock> {
     /**
      * @return the date of the day
      */
-    public Date getDate() {
+    public ScheduleDate getDate() {
         return this.date;
     }
 

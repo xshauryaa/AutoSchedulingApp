@@ -1,10 +1,8 @@
 package model;
 
-import java.util.Date;
-
 public class RigidEvent extends Event {
     
-    private Date date; // The date of the event
+    private ScheduleDate date; // The date of the event
     private int startTime; // The start time of the event in 24-hour format
     private int endTime; // The end time of the event in 24-hour format
 
@@ -17,7 +15,7 @@ public class RigidEvent extends Event {
      * @param startTime the start time of the event in 24-hour format
      * @param endTime the end time of the event in 24-hour format
      */
-    public RigidEvent(String name, ActivityType type, int duration, Date date, int startTime, int endTime) {
+    public RigidEvent(String name, ActivityType type, int duration, ScheduleDate date, int startTime, int endTime) {
         super(name, type, duration);
         this.date = date;
         this.startTime = startTime;
@@ -27,7 +25,7 @@ public class RigidEvent extends Event {
     /**
      * @return the date of the event.
      */
-    public Date getDate() {
+    public ScheduleDate getDate() {
         return this.date;
     }
 

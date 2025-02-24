@@ -2,8 +2,6 @@ package model;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Date;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -13,13 +11,13 @@ public class TimeBlockTest {
     private RigidEvent rigidEvent;
     private FluidEvent fluidEvent;
     private Break breakTime;
-    private Date date;
+    private ScheduleDate date;
     
     @BeforeEach
     public void runBefore() {
-        date = new Date(01012021);
+        date = new ScheduleDate(1, 1, 2021);
         rigidEvent = new RigidEvent("event", ActivityType.EDUCATION, 120, date, 1000, 1200);
-        fluidEvent = new FluidEvent("event", ActivityType.ERRAND, 60, Priority.LOW, new Date(05012021));
+        fluidEvent = new FluidEvent("event", ActivityType.ERRAND, 60, Priority.LOW, new ScheduleDate(5, 1, 2021));
         breakTime = new Break(20, 900, 920);
     }
     

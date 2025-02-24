@@ -1,11 +1,9 @@
 package model;
 
-import java.util.Date;
-
 public class TimeBlock {
     
     private String name; // The name of the event
-    private Date date; // date of the time block
+    private ScheduleDate date; // date of the time block
     private int startTime; // start time of the time block in 24-hour format
     private int endTime; // end time of the time block in 24-hour format
     private String type; // representation of whether time block is for a rigid event, fluid event, or break
@@ -28,7 +26,7 @@ public class TimeBlock {
      * @param endTime the end time of the time block
      * EFFECTS: Creates a new time block for given fluid event with given start and end times and type.
      */
-    public TimeBlock(FluidEvent event, Date date, int startTime, int endTime) {
+    public TimeBlock(FluidEvent event, ScheduleDate date, int startTime, int endTime) {
         this.name = event.getName();
         this.date = date;
         this.startTime = startTime;
@@ -41,7 +39,7 @@ public class TimeBlock {
      * @param date the date of the time block
      * EFFECTS: Creates a new time block for given break with its start and end times on given date.
      */
-    public TimeBlock(Break breakTime, Date date) {
+    public TimeBlock(Break breakTime, ScheduleDate date) {
         this.name = "Break";
         this.date = date;
         this.startTime = breakTime.getStartTime();
@@ -59,7 +57,7 @@ public class TimeBlock {
     /**
      * @return the date of the time block
      */
-    public Date getDate() {
+    public ScheduleDate getDate() {
         return this.date;
     }
 

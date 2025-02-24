@@ -1,11 +1,9 @@
 package model;
 
-import java.util.Date;
-
 public class FluidEvent extends Event {
     
     private Priority priority; // The priority of the event
-    private Date deadline; // The deadline of the event
+    private ScheduleDate deadline; // The deadline of the event
 
     /**
      * Creates a new event on given date with given name, activity type, priority, duration, and deadline.
@@ -15,7 +13,7 @@ public class FluidEvent extends Event {
      * @param priority the priority of the event
      * @param deadline the deadline of the event
      */
-    public FluidEvent(String name, ActivityType type, int duration, Priority priority, Date deadline) {
+    public FluidEvent(String name, ActivityType type, int duration, Priority priority, ScheduleDate deadline) {
         super(name, type, duration);
         this.priority = priority;
         this.deadline = deadline;
@@ -24,14 +22,14 @@ public class FluidEvent extends Event {
     /**
      * @return the deadline of the event.
      */
-    public Date getDeadline() {
+    public ScheduleDate getDeadline() {
         return this.deadline;
     }
 
     /**
      * @param deadline the new deadline of the event
      */
-    public void setDeadline(Date deadline) {
+    public void setDeadline(ScheduleDate deadline) {
         this.deadline = deadline;
     }
 
