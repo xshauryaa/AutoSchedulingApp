@@ -12,10 +12,10 @@ public abstract class Event {
     private int duration; // The duration of the event in minutes
 
     /**
-     * Creates a new event on given date with given name, activity type, priority, and duration.
      * @param name the name of the event
      * @param type the type of activity of the event
      * @param duration the duration of the event in minutes
+     * EFFECTS: Creates a new event on given date with given name, activity type, priority, and duration.
      */
     public Event(String name, ActivityType type, int duration) {
         this.name = name;
