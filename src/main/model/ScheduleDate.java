@@ -1,5 +1,8 @@
 package model;
 
+import java.util.List;
+import java.util.Arrays;
+
 public class ScheduleDate {
 
     private int date;
@@ -48,6 +51,54 @@ public class ScheduleDate {
     }
 
     /**
+     * @return the date of the day after this date
+     */
+    public ScheduleDate getNextDate() {
+        Integer[] array1 = {4, 6, 9, 11};
+        List<Integer> monthsWith30Days = Arrays.asList(array1);
+        Integer[] array2 = {1, 3, 5, 7, 8, 10, 12};
+        List<Integer> monthsWith31Days = Arrays.asList(array2);
+
+        int returnDate = 0;
+        int returnMonth = 0;
+        int returnYear = 0;
+        
+        if (monthsWith30Days.contains(this.month) && this.date == 30) {
+            returnDate = 1;
+            returnMonth = this.month + 1;
+            returnYear = this.year;
+        } else if (monthsWith31Days.contains(this.month) && this.date == 31) {
+            if (month == 12) {
+                returnDate = 1;
+                returnMonth = 1;
+                returnYear = this.year + 1;
+            } else {
+                returnDate = 1;
+                returnMonth = this.month + 1;
+                returnYear = this.year;
+            }
+        } else if (this.month == 2) {
+            if (this.year % 4 == 0) {
+                if (this.date == 29) {
+                    returnDate = 1;
+                    returnMonth = this.month + 1;
+                    returnYear = this.year;
+                }
+            } else if (this.date == 28) {
+                returnDate = 1;
+                returnMonth = this.month + 1;
+                returnYear = this.year;
+            }
+        } else {
+            returnDate = this.date + 1;
+            returnMonth = this.month;
+            returnYear = this.year;
+        }
+
+        return new ScheduleDate(returnDate, returnMonth, returnYear);
+    }
+
+    /**
      * @return true if the given date is equal to the given object, false otherwise.
      */
     @Override
@@ -61,4 +112,9 @@ public class ScheduleDate {
                     this.year == other.getYear();
         }
     } 
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(date, month, year);
+    }
 }

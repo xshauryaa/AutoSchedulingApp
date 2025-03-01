@@ -29,20 +29,24 @@ public class WeekScheduleTest {
 
     @Test
     void testConstructor() {
-        assertEquals(0, weekSchedule.getScheduleForDay("Wednesday").getEvents().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Wednesday").getBreaks().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Thursday").getEvents().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Thursday").getBreaks().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Friday").getEvents().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Friday").getBreaks().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Saturday").getEvents().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Saturday").getBreaks().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Sunday").getEvents().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Sunday").getBreaks().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Monday").getEvents().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Monday").getBreaks().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Tuesday").getEvents().size());
-        assertEquals(0, weekSchedule.getScheduleForDay("Tuesday").getBreaks().size());
+        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        for (String day : days) {
+            weekSchedule = new WeekSchedule(30, new ScheduleDate(1, 1, 2025), day);
+            assertEquals(0, weekSchedule.getScheduleForDay("Wednesday").getEvents().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Wednesday").getBreaks().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Thursday").getEvents().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Thursday").getBreaks().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Friday").getEvents().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Friday").getBreaks().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Saturday").getEvents().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Saturday").getBreaks().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Sunday").getEvents().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Sunday").getBreaks().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Monday").getEvents().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Monday").getBreaks().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Tuesday").getEvents().size());
+            assertEquals(0, weekSchedule.getScheduleForDay("Tuesday").getBreaks().size());
+        }
     }
 
     @Test
@@ -59,7 +63,7 @@ public class WeekScheduleTest {
     @Test
     void testAddSingleFluidEvent() {
         try {
-            weekSchedule.addEvent("Thursday", fluidEvent1, new ScheduleDate(2, 1, 2025), 1800, 1845);
+            weekSchedule.addEvent("Thursday", fluidEvent1, 1800, 1845);
         } catch (EventConflictException | WorkingLimitExceededException e) {
             fail();
         }
@@ -99,19 +103,23 @@ public class WeekScheduleTest {
         try {
             weekSchedule.addEvent("Friday", rigidEvent1);
             weekSchedule.addEvent("Monday", rigidEvent2);
-            weekSchedule.addEvent("Thursday", fluidEvent1, new ScheduleDate(2, 1, 2025), 1800, 1845);
-            weekSchedule.addEvent("Saturday", fluidEvent2, new ScheduleDate(4, 1, 2025), 1200, 1230);
+            weekSchedule.addEvent("Thursday", fluidEvent1, 1800, 1845);
+            weekSchedule.addEvent("Saturday", fluidEvent2, 1200, 1230);
         } catch (EventConflictException | WorkingLimitExceededException e) {
             fail();
         }
+        TimeBlock testBlock1 = new TimeBlock(rigidEvent1);
+        TimeBlock testBlock2 = new TimeBlock(rigidEvent2);
+        TimeBlock testBlock3 = new TimeBlock(fluidEvent1, new ScheduleDate(2, 1, 2025), 1800, 1845);
+        TimeBlock testBlock4 = new TimeBlock(fluidEvent2, new ScheduleDate(4, 1, 2025), 1200, 1230);
         assertEquals(rigidEvent1, weekSchedule.getScheduleForDay("Friday").getEvents().get(0));
-        assertEquals(new TimeBlock(rigidEvent1), weekSchedule.getScheduleForDay("Friday").getTimeBlocks().get(0));
+        assertEquals(testBlock1, weekSchedule.getScheduleForDay("Friday").getTimeBlocks().get(1));
         assertEquals(rigidEvent2, weekSchedule.getScheduleForDay("Monday").getEvents().get(0));
-        assertEquals(new TimeBlock(rigidEvent2), weekSchedule.getScheduleForDay("Monday").getTimeBlocks().get(0));
+        assertEquals(testBlock2, weekSchedule.getScheduleForDay("Monday").getTimeBlocks().get(0));
         assertEquals(fluidEvent1, weekSchedule.getScheduleForDay("Thursday").getEvents().get(0));
-        assertEquals(new TimeBlock(fluidEvent1, new ScheduleDate(2, 1, 2025), 1800, 1845), weekSchedule.getScheduleForDay("Thursday").getTimeBlocks().get(0));
+        assertEquals(testBlock3, weekSchedule.getScheduleForDay("Thursday").getTimeBlocks().get(1));
         assertEquals(fluidEvent2, weekSchedule.getScheduleForDay("Saturday").getEvents().get(0));
-        assertEquals(new TimeBlock(fluidEvent1, new ScheduleDate(4, 1, 2025), 1200, 1230), weekSchedule.getScheduleForDay("Saturday").getTimeBlocks().get(0));
+        assertEquals(testBlock4, weekSchedule.getScheduleForDay("Saturday").getTimeBlocks().get(0));
     }
 
     @Test
@@ -119,7 +127,7 @@ public class WeekScheduleTest {
         weekSchedule.addBreak("Monday", breakTime);
         try {
             weekSchedule.addEvent("Friday", rigidEvent1);
-            weekSchedule.addEvent("Thursday", fluidEvent1, new ScheduleDate(2, 1, 2025), 1800, 1845);
+            weekSchedule.addEvent("Thursday", fluidEvent1, 1800, 1845);
         } catch (EventConflictException | WorkingLimitExceededException e) {
             fail();
         }

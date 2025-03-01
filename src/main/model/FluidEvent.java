@@ -27,13 +27,6 @@ public class FluidEvent extends Event {
     }
 
     /**
-     * @param deadline the new deadline of the event
-     */
-    public void setDeadline(ScheduleDate deadline) {
-        this.deadline = deadline;
-    }
-
-    /**
      * @return the priority of the event
      */
     public Priority getPriority() {

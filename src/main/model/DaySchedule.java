@@ -264,8 +264,10 @@ public class DaySchedule implements Iterable<TimeBlock> {
                         break;
                     }
                 }
+                sortedTimeBlocks.add(timeBlock);
             }
         }
+        timeBlocks = sortedTimeBlocks;
     }
 
     @Override

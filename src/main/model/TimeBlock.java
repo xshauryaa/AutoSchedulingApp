@@ -2,10 +2,11 @@ package model;
 
 public class TimeBlock {
     
-    private String name; // The name of the event
+    private String name; // name of the event
     private ScheduleDate date; // date of the time block
     private int startTime; // start time of the time block in 24-hour format
     private int endTime; // end time of the time block in 24-hour format
+    private int duration; // duration of the time block
     private String type; // representation of whether time block is for a rigid event, fluid event, or break
 
     /**
@@ -17,6 +18,7 @@ public class TimeBlock {
         this.date = event.getDate();
         this.startTime = event.getStartTime();
         this.endTime = event.getEndTime();
+        this.duration = event.getDuration();
         this.type = "rigid";
     }
 
@@ -31,6 +33,7 @@ public class TimeBlock {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.duration = event.getDuration();
         this.type = "fluid";
     }
 
@@ -44,6 +47,7 @@ public class TimeBlock {
         this.date = date;
         this.startTime = breakTime.getStartTime();
         this.endTime = breakTime.getEndTime();
+        this.duration = breakTime.getDuration();
         this.type = "break";
     }
 
@@ -83,6 +87,13 @@ public class TimeBlock {
     }
 
     /**
+     * @return the duration of the time block
+     */
+    public int getDuration() {
+        return this.duration;
+    }
+
+    /**
      * @param obj the object to be compared
      * @return true if the object is equal to the given time block, false otherwise
      */
@@ -93,6 +104,12 @@ public class TimeBlock {
         TimeBlock timeBlock = (TimeBlock) obj;
         return this.name.equals(timeBlock.getName()) && this.date.equals(timeBlock.getDate()) 
                 && this.startTime == timeBlock.getStartTime() && this.endTime == timeBlock.getEndTime()
-                && this.type.equals(timeBlock.getType());
+                && this.duration == timeBlock.getDuration() && this.type.equals(timeBlock.getType());
     }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(name, date, startTime, endTime, duration, type);
+    }
+
 }
