@@ -13,7 +13,7 @@ public class DayScheduleTest {
     
     private DaySchedule daySchedule;
     private RigidEvent rigidEvent;
-    private FluidEvent fluidEvent;
+    private FlexibleEvent fluidEvent;
     private Break breakTime;
     private ScheduleDate date;
     private ScheduleDate deadline;
@@ -24,7 +24,7 @@ public class DayScheduleTest {
         deadline = new ScheduleDate(5, 1, 2025);
         daySchedule = new DaySchedule("Monday", date, 30, 6);
         rigidEvent = new RigidEvent("Meeting", ActivityType.MEETING, 60, date, 1200, 1300);
-        fluidEvent = new FluidEvent("Study", ActivityType.EDUCATION, 120, Priority.HIGH, deadline);
+        fluidEvent = new FlexibleEvent("Study", ActivityType.EDUCATION, 120, Priority.HIGH, deadline);
         breakTime = new Break(30, 1500, 1530);
     }
 
@@ -119,7 +119,7 @@ public class DayScheduleTest {
 
     @Test
     void testAddEventWorkingLimitExceeded() {
-        FluidEvent fluidEvent2 = new FluidEvent("Study", ActivityType.EDUCATION, 240, Priority.HIGH, deadline);
+        FlexibleEvent fluidEvent2 = new FlexibleEvent("Study", ActivityType.EDUCATION, 240, Priority.HIGH, deadline);
         try {
             daySchedule.addEvent(rigidEvent);
             daySchedule.addEvent(fluidEvent, 1400, 1600);

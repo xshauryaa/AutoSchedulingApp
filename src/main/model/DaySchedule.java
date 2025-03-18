@@ -148,7 +148,7 @@ public class DaySchedule implements Iterable<TimeBlock> {
      * @throws WorkingLimitExceededException if the total working hours exceed the working hours limit
      *                                       after adding the event
      */
-    public void addEvent(FluidEvent event, int startTime, int endTime) throws EventConflictException, WorkingLimitExceededException {
+    public void addEvent(FlexibleEvent event, int startTime, int endTime) throws EventConflictException, WorkingLimitExceededException {
         if (checkEventConflict(event, startTime, endTime)) {
             throw new EventConflictException();
         } else if (event.getDuration() + (calculateWorkingHours() * 60) > (this.workingHoursLimit * 60)) {
@@ -238,7 +238,7 @@ public class DaySchedule implements Iterable<TimeBlock> {
      * @param endTime the end time of the event
      * @return true if the event overlaps with any other event or break, false otherwise
      */
-    private boolean checkEventConflict(FluidEvent event, int startTime, int endTime) {
+    private boolean checkEventConflict(FlexibleEvent event, int startTime, int endTime) {
         for (TimeBlock tb : this.timeBlocks) {
             boolean condition1 = startTime <= tb.getStartTime() && endTime >= tb.getStartTime();
             boolean condition2 = startTime <= tb.getEndTime() && endTime >= tb.getEndTime();

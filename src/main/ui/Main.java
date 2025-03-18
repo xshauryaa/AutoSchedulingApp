@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import model.ActivityType;
 import model.Break;
-import model.FluidEvent;
+import model.FlexibleEvent;
 import model.Priority;
 import model.RigidEvent;
 import model.ScheduleDate;
@@ -16,8 +16,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         RigidEvent rigidEvent1 = new RigidEvent("Club Meeting", ActivityType.MEETING, 60, new ScheduleDate(3, 1, 2025), 1530, 1630);
         RigidEvent rigidEvent2 = new RigidEvent("Study Session with Friend", ActivityType.EDUCATION, 120, new ScheduleDate(6, 1, 2025), 1200, 1400);
-        FluidEvent fluidEvent1 = new FluidEvent("Grocery Shopping", ActivityType.ERRAND, 45, Priority.MEDIUM, new ScheduleDate(5, 1, 20205));
-        FluidEvent fluidEvent2 = new FluidEvent("Doctor's Appointment", ActivityType.PERSONAL, 30, Priority.HIGH, new ScheduleDate(7, 1, 20205));
+        FlexibleEvent fluidEvent1 = new FlexibleEvent("Grocery Shopping", ActivityType.ERRAND, 45, Priority.MEDIUM, new ScheduleDate(5, 1, 20205));
+        FlexibleEvent fluidEvent2 = new FlexibleEvent("Doctor's Appointment", ActivityType.PERSONAL, 30, Priority.HIGH, new ScheduleDate(7, 1, 20205));
         Break breakTime = new Break(30, 1430, 1500);
         WeekSchedule weekSchedule = new WeekSchedule(30, new ScheduleDate(1, 1, 2025), "Wednesday", 12);
         weekSchedule.addBreakToFullWeek(breakTime);

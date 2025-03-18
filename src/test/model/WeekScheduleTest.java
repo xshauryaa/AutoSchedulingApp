@@ -13,8 +13,8 @@ public class WeekScheduleTest {
     private WeekSchedule weekSchedule;
     private RigidEvent rigidEvent1;
     private RigidEvent rigidEvent2;
-    private FluidEvent fluidEvent1;
-    private FluidEvent fluidEvent2;
+    private FlexibleEvent fluidEvent1;
+    private FlexibleEvent fluidEvent2;
     private Break breakTime;
 
     @BeforeEach
@@ -22,8 +22,8 @@ public class WeekScheduleTest {
         weekSchedule = new WeekSchedule(30, new ScheduleDate(1, 1, 2025), "Wednesday", 12);
         rigidEvent1 = new RigidEvent("Club Meeting", ActivityType.MEETING, 60, new ScheduleDate(3, 1, 2025), 1530, 1630);
         rigidEvent2 = new RigidEvent("Study Session with Friend", ActivityType.EDUCATION, 120, new ScheduleDate(6, 1, 2025), 1200, 1400);
-        fluidEvent1 = new FluidEvent("Grocery Shopping", ActivityType.ERRAND, 45, Priority.MEDIUM, new ScheduleDate(5, 1, 20205));
-        fluidEvent2 = new FluidEvent("Doctor's Appointment", ActivityType.PERSONAL, 30, Priority.HIGH, new ScheduleDate(7, 1, 20205));
+        fluidEvent1 = new FlexibleEvent("Grocery Shopping", ActivityType.ERRAND, 45, Priority.MEDIUM, new ScheduleDate(5, 1, 20205));
+        fluidEvent2 = new FlexibleEvent("Doctor's Appointment", ActivityType.PERSONAL, 30, Priority.HIGH, new ScheduleDate(7, 1, 20205));
         breakTime = new Break(30, 1430, 1500);
     }
 

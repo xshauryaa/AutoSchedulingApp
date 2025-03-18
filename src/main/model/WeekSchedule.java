@@ -70,7 +70,7 @@ public class WeekSchedule {
      * @throws EventConflictException if the event conflicts with another event
      * @throws WorkingLimitExceededException if the working hours limit is exceeded
      */
-    public void addEvent(String day, FluidEvent event, int startTime, int endTime) throws EventConflictException, WorkingLimitExceededException {
+    public void addEvent(String day, FlexibleEvent event, int startTime, int endTime) throws EventConflictException, WorkingLimitExceededException {
         weekSchedule.get(day).addEvent(event, startTime, endTime);
     }
 

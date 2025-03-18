@@ -8,12 +8,12 @@ import org.junit.jupiter.api.BeforeEach;
 public class EventTest {
     
     private RigidEvent testRigidEvent;
-    private FluidEvent testFluidEvent;
+    private FlexibleEvent testFluidEvent;
 
     @BeforeEach
     void runBefore() {
         testRigidEvent = new RigidEvent("Test Rigid Event", ActivityType.EVENT, 60, null, 900, 1000);
-        testFluidEvent = new FluidEvent("Test Fluid Event", ActivityType.EVENT, 30, Priority.HIGH, new ScheduleDate(1, 1, 2025));
+        testFluidEvent = new FlexibleEvent("Test Fluid Event", ActivityType.EVENT, 30, Priority.HIGH, new ScheduleDate(1, 1, 2025));
     }
 
     @Test

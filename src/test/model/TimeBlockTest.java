@@ -9,7 +9,7 @@ public class TimeBlockTest {
     
     private TimeBlock timeBlock;
     private RigidEvent rigidEvent;
-    private FluidEvent fluidEvent;
+    private FlexibleEvent fluidEvent;
     private Break breakTime;
     private ScheduleDate date;
     
@@ -17,7 +17,7 @@ public class TimeBlockTest {
     void runBefore() {
         date = new ScheduleDate(1, 1, 2021);
         rigidEvent = new RigidEvent("event", ActivityType.EDUCATION, 120, date, 1000, 1200);
-        fluidEvent = new FluidEvent("event", ActivityType.ERRAND, 60, Priority.LOW, new ScheduleDate(5, 1, 2021));
+        fluidEvent = new FlexibleEvent("event", ActivityType.ERRAND, 60, Priority.LOW, new ScheduleDate(5, 1, 2021));
         breakTime = new Break(20, 900, 920);
     }
     

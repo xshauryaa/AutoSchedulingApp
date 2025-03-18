@@ -19,8 +19,8 @@ public class EventDependenciesTest {
     void runBefore() {
         eventDependencies = new EventDependencies();
         event1 = new RigidEvent("CPSC 221", ActivityType.EDUCATION, 60, new ScheduleDate(5, 3, 2025), 1600, 1700);
-        event2 = new FluidEvent("Pre-reading", ActivityType.EDUCATION, 30, Priority.MEDIUM, new ScheduleDate(4, 3, 2025));
-        event3 = new FluidEvent("Practice Q's", ActivityType.EDUCATION, 120, Priority.HIGH, new ScheduleDate(8, 3, 2025));
+        event2 = new FlexibleEvent("Pre-reading", ActivityType.EDUCATION, 30, Priority.MEDIUM, new ScheduleDate(4, 3, 2025));
+        event3 = new FlexibleEvent("Practice Q's", ActivityType.EDUCATION, 120, Priority.HIGH, new ScheduleDate(8, 3, 2025));
         event4 = new RigidEvent("Examlet 6", ActivityType.EDUCATION, 60, new ScheduleDate(8, 3, 2025), 1500, 1600);
     }
 

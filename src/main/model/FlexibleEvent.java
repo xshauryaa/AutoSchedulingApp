@@ -1,6 +1,6 @@
 package model;
 
-public class FluidEvent extends Event {
+public class FlexibleEvent extends Event {
     
     private Priority priority; // The priority of the event
     private ScheduleDate deadline; // The deadline of the event
@@ -13,7 +13,7 @@ public class FluidEvent extends Event {
      * @param deadline the deadline of the event
      * EFFECTS: Creates a new event on given date with given name, activity type, priority, duration, and deadline.
      */
-    public FluidEvent(String name, ActivityType type, int duration, Priority priority, ScheduleDate deadline) {
+    public FlexibleEvent(String name, ActivityType type, int duration, Priority priority, ScheduleDate deadline) {
         super(name, type, duration);
         this.priority = priority;
         this.deadline = deadline;

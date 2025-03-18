@@ -28,7 +28,7 @@ public class TimeBlock {
      * @param endTime the end time of the time block
      * EFFECTS: Creates a new time block for given fluid event with given start and end times and type.
      */
-    public TimeBlock(FluidEvent event, ScheduleDate date, int startTime, int endTime) {
+    public TimeBlock(FlexibleEvent event, ScheduleDate date, int startTime, int endTime) {
         this.name = event.getName();
         this.date = date;
         this.startTime = startTime;
