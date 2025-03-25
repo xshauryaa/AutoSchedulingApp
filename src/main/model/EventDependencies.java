@@ -2,6 +2,10 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import model.exceptions.CircularDependencyException;
 
 public class EventDependencies {
     
@@ -20,13 +24,16 @@ public class EventDependencies {
      * MODIFIES: this
      * EFFECTS: adds given dependency to given event
      */
-    public void addDependency(Event event, Event dependency) {
-        if (dependencies.containsKey(event)) {
-            dependencies.get(event).add(dependency);
-        } else {
-            ArrayList<Event> eventDependencies = new ArrayList<Event>();
-            eventDependencies.add(dependency);
-            dependencies.put(event, eventDependencies);
+    public void addDependency(Event event, Event dependency) throws CircularDependencyException {
+        // Temporarily add the dependency
+        dependencies.putIfAbsent(event, new ArrayList<>());
+        dependencies.get(event).add(dependency);
+
+        // Check for cycle
+        if (hasCycle()) {
+            // Revert the change
+            dependencies.get(event).remove(dependency);
+            throw new CircularDependencyException(dependency.toString(), event.toString());
         }
     }
 
@@ -50,5 +57,48 @@ public class EventDependencies {
      */
     public ArrayList<Event> getDependenciesForEvent(Event event) {
         return dependencies.get(event);
+    }
+
+    /**
+     * @return true if there is a cycle in the dependencies, false otherwise
+     */
+    private boolean hasCycle() {
+        Set<Event> visited = new HashSet<>();
+        Set<Event> recursionStack = new HashSet<>();
+
+        for (Event event : dependencies.keySet()) {
+            if (dfsCycleCheck(event, visited, recursionStack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param current the current event
+     * @param visited set of visited events
+     * @param stack set of events in the recursion stack
+     * @return true if there is a cycle in the dependencies, false otherwise
+     */
+    private boolean dfsCycleCheck(Event current, Set<Event> visited, Set<Event> stack) {
+        if (stack.contains(current)) {
+            return true;
+        }
+
+        if (visited.contains(current)) {
+            return false;
+        }
+
+        visited.add(current);
+        stack.add(current);
+
+        for (Event dep : dependencies.getOrDefault(current, new ArrayList<>())) {
+            if (dfsCycleCheck(dep, visited, stack)) {
+                return true;
+            }
+        }
+
+        stack.remove(current);
+        return false;
     }
 }
