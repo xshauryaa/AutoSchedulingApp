@@ -31,7 +31,7 @@ public class WeekScheduleTest {
     void testConstructor() {
         String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         for (String day : days) {
-            weekSchedule = new WeekSchedule(30, new ScheduleDate(1, 1, 2025), day);
+            weekSchedule = new WeekSchedule(30, new ScheduleDate(1, 1, 2025), day, 12);
             assertEquals(0, weekSchedule.getScheduleForDay("Wednesday").getEvents().size());
             assertEquals(0, weekSchedule.getScheduleForDay("Wednesday").getBreaks().size());
             assertEquals(0, weekSchedule.getScheduleForDay("Thursday").getEvents().size());

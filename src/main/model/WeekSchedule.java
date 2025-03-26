@@ -13,17 +13,6 @@ public class WeekSchedule {
      * @param minGap the gap between events
      * @param day1Date the date of the first day in this week's schedule
      * @param day1Day the day of the week on which the schedule starts
-     * EFFECTS: creates a new WeekSchedule with 7 days of the week and given minimum gap
-     */
-    public WeekSchedule(int minGap, ScheduleDate day1Date, String day1Day) {
-        weekSchedule = new HashMap<String, DaySchedule>();
-        initiateWeekSchedule(minGap, day1Date, day1Day, 12);
-    }
-
-    /**
-     * @param minGap the gap between events
-     * @param day1Date the date of the first day in this week's schedule
-     * @param day1Day the day of the week on which the schedule starts
      * @param workingHoursLimit the maximum working hours per day
      * EFFECTS: creates a new WeekSchedule with 7 days of the week, given minimum gap,
      *          and given working hours limit

@@ -16,24 +16,6 @@ public class DaySchedule implements Iterable<TimeBlock> {
     private int minGap; // minimum gap between events
     private int workingHoursLimit; // maximum working hours per day
 
-    /** 
-     * REQUIRES: day is one of "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-     * @param day the day of the week
-     * @param date the date of the day
-     * @param minGap the gap between events
-     * EFFECTS: creates a new DaySchedule with given day and date, with set gap, and no events or breaks
-     * Default working hours limit is 12 hours
-     */
-    public DaySchedule(String day, ScheduleDate date, int minGap) {
-        this.day = day;
-        this.date = date;
-        this.minGap = minGap;
-        this.workingHoursLimit = 12;
-        this.events = new ArrayList<Event>();
-        this.breaks = new ArrayList<Break>();
-        this.timeBlocks = new ArrayList<TimeBlock>();
-    }
-
     /**
      * REQUIRES: day is one of "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
      * @param day the day of the week

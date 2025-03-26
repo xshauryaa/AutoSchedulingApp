@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
+
+import model.exceptions.CircularDependencyException;
+
 import org.junit.jupiter.api.BeforeEach;
 
 public class EventDependenciesTest {
@@ -26,10 +29,14 @@ public class EventDependenciesTest {
 
     @Test
     void testAddDependency() {
-        eventDependencies.addDependency(event1, event2);
-        eventDependencies.addDependency(event4, event1);
-        eventDependencies.addDependency(event4, event2);
-        eventDependencies.addDependency(event4, event3);
+        try {
+            eventDependencies.addDependency(event1, event2);
+            eventDependencies.addDependency(event4, event1);
+            eventDependencies.addDependency(event4, event2);
+            eventDependencies.addDependency(event4, event3);
+        } catch (CircularDependencyException e) {
+            fail();
+        }
         ArrayList<Event> dependenciesForE1 = eventDependencies.getDependenciesForEvent(event1);
         ArrayList<Event> dependenciesForE4 = eventDependencies.getDependenciesForEvent(event4);
         assertEquals(event2, dependenciesForE1.get(0));
@@ -40,10 +47,14 @@ public class EventDependenciesTest {
 
     @Test
     void testRemoveDependency() {
-        eventDependencies.addDependency(event1, event2);
-        eventDependencies.addDependency(event4, event1);
-        eventDependencies.addDependency(event4, event2);
-        eventDependencies.addDependency(event4, event3);
+        try {
+            eventDependencies.addDependency(event1, event2);
+            eventDependencies.addDependency(event4, event1);
+            eventDependencies.addDependency(event4, event2);
+            eventDependencies.addDependency(event4, event3);
+        } catch (CircularDependencyException e) {
+            fail();
+        }
         eventDependencies.removeDependency(event4, event2); // Remove existing dependency
         eventDependencies.removeDependency(event1, event4); // Remove non-existing dependency
         ArrayList<Event> dependenciesForE1 = eventDependencies.getDependenciesForEvent(event1);
