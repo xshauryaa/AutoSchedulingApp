@@ -83,10 +83,18 @@ public class ScheduleDate {
                     returnDate = 1;
                     returnMonth = this.month + 1;
                     returnYear = this.year;
+                } else {
+                    returnDate = this.date + 1;
+                    returnMonth = this.month;
+                    returnYear = this.year;
                 }
             } else if (this.date == 28) {
                 returnDate = 1;
                 returnMonth = this.month + 1;
+                returnYear = this.year;
+            } else {
+                returnDate = this.date + 1;
+                returnMonth = this.month;
                 returnYear = this.year;
             }
         } else {
