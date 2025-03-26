@@ -8,6 +8,7 @@ import model.exceptions.WorkingLimitExceededException;
 public class WeekSchedule {
     
     private HashMap<String, DaySchedule> weekSchedule;
+    public static String[] DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     /**
      * @param minGap the gap between events
@@ -69,8 +70,7 @@ public class WeekSchedule {
      * EFFECTS: adds the break to every day in the week
      */
     public void addBreakToFullWeek(Break breakTime) {
-        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-        for (String day : days) {
+        for (String day : DAYS) {
             weekSchedule.get(day).addBreak(breakTime);
         }
     }
@@ -110,8 +110,7 @@ public class WeekSchedule {
      */
     public double calculateTotalOccupiedHours() {
         int totalOccupiedHours = 0;
-        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-        for (String day : days) {
+        for (String day : DAYS) {
             for (TimeBlock t : weekSchedule.get(day)) {
                 if (t.getType().equals("Break")) {
                     continue;
@@ -128,104 +127,18 @@ public class WeekSchedule {
      */
     private void initiateWeekSchedule(int minGap, ScheduleDate day1Date, String day1Day, int workingHoursLimit) {
         ScheduleDate currDate = day1Date;
-        if (day1Day == "Monday") {
-            weekSchedule.put("Monday", new DaySchedule("Monday", currDate, minGap, workingHoursLimit));
+        int i = 0;
+        for (String day : DAYS) {
+            if (day.equals(day1Day)) {
+                break;
+            } 
+            i++;
+        }
+        for (int j = 0; j < 7; j++) {
+            DaySchedule schedule = new DaySchedule(DAYS[i % 7], currDate, minGap, workingHoursLimit);
+            weekSchedule.put(DAYS[i % 7], schedule);
             currDate = currDate.getNextDate();
-            weekSchedule.put("Tuesday", new DaySchedule("Tuesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Wednesday", new DaySchedule("Wednesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Thursday", new DaySchedule("Thursday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Friday", new DaySchedule("Friday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Saturday", new DaySchedule("Saturday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Sunday", new DaySchedule("Sunday", currDate, minGap, workingHoursLimit));
-        } else if (day1Day == "Tuesday") {
-            weekSchedule.put("Tuesday", new DaySchedule("Tuesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Wednesday", new DaySchedule("Wednesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Thursday", new DaySchedule("Thursday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Friday", new DaySchedule("Friday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Saturday", new DaySchedule("Saturday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Sunday", new DaySchedule("Sunday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Monday", new DaySchedule("Monday", currDate, minGap, workingHoursLimit));
-        } else if (day1Day == "Wednesday") {
-            weekSchedule.put("Wednesday", new DaySchedule("Wednesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Thursday", new DaySchedule("Thursday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Friday", new DaySchedule("Friday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Saturday", new DaySchedule("Saturday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Sunday", new DaySchedule("Sunday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Monday", new DaySchedule("Monday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Tuesday", new DaySchedule("Tuesday", currDate, minGap, workingHoursLimit));
-        } else if (day1Day == "Thursday") {
-            weekSchedule.put("Thursday", new DaySchedule("Thursday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Friday", new DaySchedule("Friday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Saturday", new DaySchedule("Saturday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Sunday", new DaySchedule("Sunday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Monday", new DaySchedule("Monday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Tuesday", new DaySchedule("Tuesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Wednesday", new DaySchedule("Wednesday", currDate, minGap, workingHoursLimit));
-        } else if (day1Day == "Friday") {
-            weekSchedule.put("Friday", new DaySchedule("Friday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Saturday", new DaySchedule("Saturday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Sunday", new DaySchedule("Sunday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Monday", new DaySchedule("Monday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Tuesday", new DaySchedule("Tuesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Wednesday", new DaySchedule("Wednesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Thursday", new DaySchedule("Thursday", currDate, minGap, workingHoursLimit));
-        } else if (day1Day == "Saturday") {
-            weekSchedule.put("Saturday", new DaySchedule("Saturday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Sunday", new DaySchedule("Sunday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Monday", new DaySchedule("Monday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Tuesday", new DaySchedule("Tuesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Wednesday", new DaySchedule("Wednesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Thursday", new DaySchedule("Thursday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Friday", new DaySchedule("Friday", currDate, minGap, workingHoursLimit));
-        } else if (day1Day == "Sunday") {
-            weekSchedule.put("Sunday", new DaySchedule("Sunday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Monday", new DaySchedule("Monday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Tuesday", new DaySchedule("Tuesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Wednesday", new DaySchedule("Wednesday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Thursday", new DaySchedule("Thursday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Friday", new DaySchedule("Friday", currDate, minGap, workingHoursLimit));
-            currDate = currDate.getNextDate();
-            weekSchedule.put("Saturday", new DaySchedule("Saturday", currDate, minGap, workingHoursLimit));
-        } 
+            i++;
+        }
     }
 }
