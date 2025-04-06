@@ -41,13 +41,7 @@ public class DayScheduleTest {
 
     @Test
     void testAddValidRigidEvent() {
-        try {
-            daySchedule.addEvent(rigidEvent);
-        } catch (EventConflictException e) {
-            fail();
-        } catch (WorkingLimitExceededException e) {
-            fail();
-        }
+        daySchedule.addEvent(rigidEvent);
         assertEquals(1, daySchedule.getEvents().size());
         assertEquals(1, daySchedule.getTimeBlocks().size());
         assertEquals(0, daySchedule.getBreaks().size());
@@ -81,23 +75,6 @@ public class DayScheduleTest {
         assertEquals(new TimeBlock(breakTime, date), daySchedule.getTimeBlocks().get(0));
     }
 
-    @Test
-    void testAddRigidEventConflict() {
-        try {
-            daySchedule.addEvent(rigidEvent);
-            daySchedule.addEvent(rigidEvent);
-            fail();
-        } catch (EventConflictException e) {
-            // expected
-        } catch (WorkingLimitExceededException e) {
-            fail();
-        }
-        assertEquals(1, daySchedule.getEvents().size());
-        assertEquals(1, daySchedule.getTimeBlocks().size());
-        assertEquals(0, daySchedule.getBreaks().size());
-        assertEquals(rigidEvent, daySchedule.getEvents().get(0));
-        assertEquals(new TimeBlock(rigidEvent), daySchedule.getTimeBlocks().get(0));
-    }
 
     @Test
     void testAddFluidEventConflict() {
@@ -141,14 +118,8 @@ public class DayScheduleTest {
 
     @Test
     void testRemoveEvent() {
-        try {
-            daySchedule.addEvent(rigidEvent);
-            daySchedule.removeEvent(rigidEvent);
-        } catch (EventConflictException e) {
-            fail();
-        } catch (WorkingLimitExceededException e) {
-            fail();
-        }
+        daySchedule.addEvent(rigidEvent);
+        daySchedule.removeEvent(rigidEvent);
         assertEquals(0, daySchedule.getEvents().size());
         assertEquals(0, daySchedule.getTimeBlocks().size());
         assertEquals(0, daySchedule.getBreaks().size());

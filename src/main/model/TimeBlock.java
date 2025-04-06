@@ -4,8 +4,8 @@ public class TimeBlock {
     
     private String name; // name of the event
     private ScheduleDate date; // date of the time block
-    private int startTime; // start time of the time block in 24-hour format
-    private int endTime; // end time of the time block in 24-hour format
+    private Time24 startTime; // start time of the time block in 24-hour format
+    private Time24 endTime; // end time of the time block in 24-hour format
     private int duration; // duration of the time block
     private String type; // representation of whether time block is for a rigid event, fluid event, or break
 
@@ -31,8 +31,8 @@ public class TimeBlock {
     public TimeBlock(FlexibleEvent event, ScheduleDate date, int startTime, int endTime) {
         this.name = event.getName();
         this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = new Time24(startTime);
+        this.endTime = new Time24(endTime);
         this.duration = event.getDuration();
         this.type = "fluid";
     }
@@ -68,14 +68,14 @@ public class TimeBlock {
     /**
      * @return the start time of the time block
      */
-    public int getStartTime() {
+    public Time24 getStartTime() {
         return this.startTime;
     }
 
     /**
      * @return the end time of the time block
      */
-    public int getEndTime() {
+    public Time24 getEndTime() {
         return this.endTime;
     }
 

@@ -3,8 +3,8 @@ package model;
 public class Break {
     
     private int duration; // The duration of the break in minutes
-    private int startTime; // The start time of the break in 24-hour format
-    private int endTime; // The end time of the break in 24-hour format
+    private Time24 startTime; // The start time of the break in 24-hour format
+    private Time24 endTime; // The end time of the break in 24-hour format
 
     /**
      * Creates a new break with given duration.
@@ -14,8 +14,8 @@ public class Break {
      */
     public Break(int duration, int startTime, int endTime) {
         this.duration = duration;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = new Time24(startTime);
+        this.endTime = new Time24(endTime);
     }
 
     /**
@@ -28,14 +28,14 @@ public class Break {
     /**
      * @return the start time of the break.
      */
-    public int getStartTime() {
+    public Time24 getStartTime() {
         return this.startTime;
     }
 
     /**
      * @return the end time of the break.
      */
-    public int getEndTime() {
+    public Time24 getEndTime() {
         return this.endTime;
     }
 

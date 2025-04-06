@@ -51,11 +51,7 @@ public class WeekScheduleTest {
 
     @Test
     void testAddSingleRigidEvent() {
-        try {
-            weekSchedule.addEvent("Friday", rigidEvent1);
-        } catch (EventConflictException | WorkingLimitExceededException e) {
-            fail();
-        }
+        weekSchedule.addEvent("Friday", rigidEvent1);
         assertEquals(rigidEvent1, weekSchedule.getScheduleForDay("Friday").getEvents().get(0));
         assertEquals(new TimeBlock(rigidEvent1), weekSchedule.getScheduleForDay("Friday").getTimeBlocks().get(0));
     }

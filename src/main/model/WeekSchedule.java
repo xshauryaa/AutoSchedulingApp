@@ -31,6 +31,20 @@ public class WeekSchedule {
     }
 
     /**
+     * @param date the date for which day is to be found
+     * @return the day on which the given date falls
+     */
+    public String getDayFromDate(ScheduleDate date) {
+        for (String day : DAYS) {
+            if (getScheduleForDay(day).getDate().equals(date)) {
+                return day;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param day the day for the schedule is to be retrieved
      * @return the schedule for the specified day in the week
      */
@@ -43,10 +57,8 @@ public class WeekSchedule {
      * @param event the event to add
      * MODIFIES: this
      * EFFECTS: adds the event to the schedule of the given day
-     * @throws EventConflictException if the event conflicts with another event
-     * @throws WorkingLimitExceededException if the working hours limit is exceeded
      */
-    public void addEvent(String day, RigidEvent event) throws EventConflictException, WorkingLimitExceededException {
+    public void addEvent(String day, RigidEvent event) {
         weekSchedule.get(day).addEvent(event);
     }
 

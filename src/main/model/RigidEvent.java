@@ -3,8 +3,8 @@ package model;
 public class RigidEvent extends Event {
     
     private ScheduleDate date; // The date of the event
-    private int startTime; // The start time of the event in 24-hour format
-    private int endTime; // The end time of the event in 24-hour format
+    private Time24 startTime; // The start time of the event in 24-hour format
+    private Time24 endTime; // The end time of the event in 24-hour format
 
     /**
      * @param name the name of the event
@@ -18,8 +18,8 @@ public class RigidEvent extends Event {
     public RigidEvent(String name, ActivityType type, int duration, ScheduleDate date, int startTime, int endTime) {
         super(name, type, duration);
         this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = new Time24(startTime);
+        this.endTime = new Time24(endTime);
     }
 
     /**
@@ -32,14 +32,14 @@ public class RigidEvent extends Event {
     /**
      * @return the start time of the event in 24-hour format.
      */
-    public int getStartTime() {
+    public Time24 getStartTime() {
         return this.startTime;
     }
 
     /**
      * @return the end time of the event in 24-hour format.
      */
-    public int getEndTime() {
+    public Time24 getEndTime() {
         return this.endTime;
     }
 }

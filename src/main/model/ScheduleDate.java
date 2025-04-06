@@ -51,6 +51,50 @@ public class ScheduleDate {
     }
 
     /**
+     * @param date the date to be compared
+     * @return true if this date is before the given date
+     */
+    public boolean isBefore(ScheduleDate date) {
+        if (this.year < date.getYear()) {
+            return true;
+        } else if (this.year == date.getYear()) {
+            if (this.month < date.getMonth()) {
+                return true;
+            } else if (this.month == date.getMonth()) {
+                if (this.date < date.getDate()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param date the date to be compared
+     * @return true if this date is after the given date
+     */
+    public boolean isAfter(ScheduleDate date) {
+        if (this.year > date.getYear()) {
+            return true;
+        } else if (this.year == date.getYear()) {
+            if (this.month > date.getMonth()) {
+                return true;
+            } else if (this.month == date.getMonth()) {
+                if (this.date > date.getDate()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @return the date of the day after this date
      */
     public ScheduleDate getNextDate() {

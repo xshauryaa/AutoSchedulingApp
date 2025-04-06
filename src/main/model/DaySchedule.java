@@ -99,21 +99,11 @@ public class DaySchedule implements Iterable<TimeBlock> {
      * MODIFIES: this
      * EFFECTS: adds the event to the list of events and adds a corresponding time block to the 
      *          list of time blocks
-     * @throws EventConflictException if the event overlaps with any other event or break 
-     *                                or the total working hours exceed the working hours limit 
-     * @throws WorkingLimitExceededException if the total working hours exceed the working hours limit
-     *                                       after adding the event
      */
-    public void addEvent(RigidEvent event) throws EventConflictException, WorkingLimitExceededException {
-        if (checkEventConflict(event)) {
-            throw new EventConflictException();
-        } else if (event.getDuration() + (calculateWorkingHours() * 60) > (this.workingHoursLimit * 60)) {
-            throw new WorkingLimitExceededException();
-        } else {
-            this.events.add(event);
-            this.timeBlocks.add(new TimeBlock(event));
-            sortSchedule();
-        }
+    public void addEvent(RigidEvent event) {
+        this.events.add(event);
+        this.timeBlocks.add(new TimeBlock(event));
+        sortSchedule();
     }
 
     /**
@@ -200,30 +190,17 @@ public class DaySchedule implements Iterable<TimeBlock> {
     }
 
     /**
-     * @param event the rigid event to be checked for conflict
-     * @return true if the event overlaps with any other event or break, false otherwise
-     */
-    private boolean checkEventConflict(RigidEvent event) {
-        for (TimeBlock tb : this.timeBlocks) {
-            boolean condition1 = event.getStartTime() <= tb.getStartTime() && event.getEndTime() >= tb.getStartTime();
-            boolean condition2 = event.getStartTime() <= tb.getEndTime() && event.getEndTime() >= tb.getEndTime();
-            if (condition1 || condition2) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * @param event the fluid event to be checked for conflict
      * @param startTime the start time of the event
      * @param endTime the end time of the event
      * @return true if the event overlaps with any other event or break, false otherwise
      */
     private boolean checkEventConflict(FlexibleEvent event, int startTime, int endTime) {
+        Time24 startTime24 = new Time24(startTime);
+        Time24 endTime24 = new Time24(endTime);
         for (TimeBlock tb : this.timeBlocks) {
-            boolean condition1 = startTime <= tb.getStartTime() && endTime >= tb.getStartTime();
-            boolean condition2 = startTime <= tb.getEndTime() && endTime >= tb.getEndTime();
+            boolean condition1 = !(startTime24.isAfter(tb.getStartTime())) && !(endTime24.isBefore(tb.getStartTime()));
+            boolean condition2 = !(startTime24.isAfter(tb.getEndTime())) && !(endTime24.isBefore(tb.getEndTime()));
             if (condition1 || condition2) {
                 return true;
             }
@@ -241,7 +218,7 @@ public class DaySchedule implements Iterable<TimeBlock> {
                 sortedTimeBlocks.add(timeBlock);
             } else {
                 for (int i = 0; i < sortedTimeBlocks.size(); i++) {
-                    if (timeBlock.getStartTime() < sortedTimeBlocks.get(i).getStartTime()) {
+                    if (timeBlock.getStartTime().isBefore(sortedTimeBlocks.get(i).getStartTime())) {
                         sortedTimeBlocks.add(i, timeBlock);
                         break;
                     }
