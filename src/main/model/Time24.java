@@ -126,4 +126,11 @@ public class Time24 {
     public int hashCode() {
         return Objects.hash(hour, minute);
     }
+
+    @Override
+    public String toString() {
+        String minutePart = (minute < 10) ? "0" + minute : String.valueOf(minute);
+        String result = this.hour + ":" + minutePart; 
+        return result;
+    }
 }

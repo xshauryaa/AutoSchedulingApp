@@ -22,8 +22,8 @@ public class EventTest {
         assertEquals(null, testRigidEvent.getDate());
         assertEquals(ActivityType.EVENT, testRigidEvent.getType());
         assertEquals(60, testRigidEvent.getDuration());
-        assertEquals(900, testRigidEvent.getStartTime());
-        assertEquals(1000, testRigidEvent.getEndTime());
+        assertEquals(new Time24(900), testRigidEvent.getStartTime());
+        assertEquals(new Time24(1000), testRigidEvent.getEndTime());
     }
 
     @Test

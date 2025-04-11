@@ -19,6 +19,13 @@ public class EventDependencies {
     }
 
     /**
+     * @return the map of event dependencies
+     */
+    public HashMap<Event, ArrayList<Event>> getDependencies() {
+        return dependencies;
+    }
+
+    /**
      * @param event the event for which to add dependency
      * @param dependency the dependency to be added
      * MODIFIES: this

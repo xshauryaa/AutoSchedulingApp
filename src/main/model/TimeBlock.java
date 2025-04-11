@@ -4,6 +4,7 @@ public class TimeBlock {
     
     private String name; // name of the event
     private ScheduleDate date; // date of the time block
+    private ActivityType activityType; // activity type of the event 
     private Time24 startTime; // start time of the time block in 24-hour format
     private Time24 endTime; // end time of the time block in 24-hour format
     private int duration; // duration of the time block
@@ -16,6 +17,7 @@ public class TimeBlock {
     public TimeBlock(RigidEvent event) {
         this.name = event.getName();
         this.date = event.getDate();
+        this.activityType = event.getType();
         this.startTime = event.getStartTime();
         this.endTime = event.getEndTime();
         this.duration = event.getDuration();
@@ -31,6 +33,7 @@ public class TimeBlock {
     public TimeBlock(FlexibleEvent event, ScheduleDate date, int startTime, int endTime) {
         this.name = event.getName();
         this.date = date;
+        this.activityType = event.getType();
         this.startTime = new Time24(startTime);
         this.endTime = new Time24(endTime);
         this.duration = event.getDuration();
@@ -63,6 +66,13 @@ public class TimeBlock {
      */
     public ScheduleDate getDate() {
         return this.date;
+    }
+
+    /**
+     * @return the activity type of the time block
+     */
+    public ActivityType getActivityType() {
+        return this.activityType;
     }
 
     /**
@@ -103,7 +113,7 @@ public class TimeBlock {
 
         TimeBlock timeBlock = (TimeBlock) obj;
         return this.name.equals(timeBlock.getName()) && this.date.equals(timeBlock.getDate()) 
-                && this.startTime == timeBlock.getStartTime() && this.endTime == timeBlock.getEndTime()
+                && this.startTime.equals(timeBlock.getStartTime()) && this.endTime.equals(timeBlock.getEndTime())
                 && this.duration == timeBlock.getDuration() && this.type.equals(timeBlock.getType());
     }
 
@@ -112,4 +122,13 @@ public class TimeBlock {
         return java.util.Objects.hash(name, date, startTime, endTime, duration, type);
     }
 
+    @Override
+    public String toString() {
+        String result = startTime.toString() + " - " + endTime.toString() + ": " + name;
+        if (type.equals("break")) {
+            return result;
+        }
+        result += " (" + activityType + ")";
+        return result;
+    }
 }

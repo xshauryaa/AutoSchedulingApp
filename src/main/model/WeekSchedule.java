@@ -1,11 +1,12 @@
 package model;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import model.exceptions.EventConflictException;
 import model.exceptions.WorkingLimitExceededException;
 
-public class WeekSchedule {
+public class WeekSchedule implements Iterable<DaySchedule> {
     
     private HashMap<String, DaySchedule> weekSchedule;
     public static String[] DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
@@ -152,5 +153,13 @@ public class WeekSchedule {
             currDate = currDate.getNextDate();
             i++;
         }
+    }
+
+    /**
+     * @return the iterator that goes over the day schedules in the week
+     */
+    @Override
+    public Iterator<DaySchedule> iterator() {
+        return weekSchedule.values().iterator();
     }
 }

@@ -1,6 +1,5 @@
 package model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -13,14 +12,12 @@ import model.exceptions.WorkingLimitExceededException;
 public class Scheduler {
     
     private WeekSchedule schedule;
-    private WeekSchedule deadlineOrientedSchedule;
-    private WeekSchedule balancedWorkloadSchedule;
 
-    private ArrayList<Entry<String, Break>> breaks;
-    private ArrayList<Break> repeatedBreaks;
-    private ArrayList<RigidEvent> rigidEvents;
-    private ArrayList<FlexibleEvent> flexibleEvents;
-    private EventDependencies eventDependencies;
+    protected ArrayList<Entry<String, Break>> breaks;
+    protected ArrayList<Break> repeatedBreaks;
+    protected ArrayList<RigidEvent> rigidEvents;
+    protected ArrayList<FlexibleEvent> flexibleEvents;
+    protected EventDependencies eventDependencies;
 
     /**
      * @param date the date of the first day of the week to be scheduled
@@ -118,14 +115,10 @@ public class Scheduler {
             String day = entry.getKey();
             Break breakTime = entry.getValue();
             schedule.addBreak(day, breakTime);
-            deadlineOrientedSchedule.addBreak(day, breakTime);
-            balancedWorkloadSchedule.addBreak(day, breakTime);
         }
 
         for (Break breakTime : repeatedBreaks) {
             schedule.addBreakToFullWeek(breakTime);
-            deadlineOrientedSchedule.addBreakToFullWeek(breakTime);
-            balancedWorkloadSchedule.addBreakToFullWeek(breakTime);
         }
     }
 
@@ -148,12 +141,19 @@ public class Scheduler {
         }
 
         // Scheduling dependencies
-        for (RigidEvent event : rigidEvents) {
+        for (Event event : eventDependencies.getDependencies().keySet()) {
             ArrayList<Event> dependencies = eventDependencies.getDependenciesForEvent(event);
             if (dependencies != null) {
                 for (Event dep : dependencies) {
                     if (!scheduled.contains(dep)) {
-                        scheduleDependency(dep, event.getDate(), event.getStartTime(), scheduled, minGap, earliestStartTime, latestEndTime);
+                        ScheduleDate date = (event instanceof RigidEvent)
+                            ? ((RigidEvent) event).getDate()
+                            : ((FlexibleEvent) event).getDeadline();
+                        Time24 time = (event instanceof RigidEvent)
+                            ? ((RigidEvent) event).getStartTime()
+                            : latestEndTime;
+        
+                        scheduleDependency(dep, date, time, scheduled, minGap, earliestStartTime, latestEndTime);
                     }
                 }
             }

@@ -212,25 +212,36 @@ public class DaySchedule implements Iterable<TimeBlock> {
      * EFFECTS: sorts the time blocks in chronological order
      */
     private void sortSchedule() {
-        ArrayList<TimeBlock> sortedTimeBlocks = new ArrayList<TimeBlock>();
+        ArrayList<TimeBlock> sortedTimeBlocks = new ArrayList<>();
         for (TimeBlock timeBlock : this.timeBlocks) {
-            if (sortedTimeBlocks.isEmpty()) {
-                sortedTimeBlocks.add(timeBlock);
-            } else {
-                for (int i = 0; i < sortedTimeBlocks.size(); i++) {
-                    if (timeBlock.getStartTime().isBefore(sortedTimeBlocks.get(i).getStartTime())) {
-                        sortedTimeBlocks.add(i, timeBlock);
-                        break;
-                    }
+            boolean inserted = false;
+    
+            for (int i = 0; i < sortedTimeBlocks.size(); i++) {
+                if (timeBlock.getStartTime().isBefore(sortedTimeBlocks.get(i).getStartTime())) {
+                    sortedTimeBlocks.add(i, timeBlock);
+                    inserted = true;
+                    break;
                 }
-                sortedTimeBlocks.add(timeBlock);
+            }
+    
+            if (!inserted) {
+                sortedTimeBlocks.add(timeBlock); // add to the end if not inserted
             }
         }
-        timeBlocks = sortedTimeBlocks;
-    }
+        this.timeBlocks = sortedTimeBlocks;
+    }    
 
     @Override
     public Iterator<TimeBlock> iterator() {
         return this.timeBlocks.iterator();
+    }
+
+    @Override
+    public String toString() {
+        String result = "Day: " + this.day + "\n";
+        for (TimeBlock tb : this.timeBlocks) {
+            result += tb.toString() + "\n";
+        }
+        return result;
     }
 }
