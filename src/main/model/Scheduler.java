@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -130,7 +131,7 @@ public class Scheduler {
      * EFFECTS: schedules all the given events respecting dependency order
      */
     private void scheduleEvents(Time24 earliestStartTime, Time24 latestEndTime) {
-        Set<Event> scheduled = new HashSet<Event>();
+        Set<Event> scheduled = new LinkedHashSet<>();
         int minGap = schedule.getScheduleForDay("Monday").getMinGap();
 
         // Scheduling all rigid events
@@ -217,13 +218,13 @@ public class Scheduler {
                 Time24 blockStart = tb.getStartTime();
                 Time24 blockEnd = tb.getEndTime();
                 
-                Time24 latestAllowedStart = blockStart.copy();
-                latestAllowedStart.subtractMinutes(minGap);
+                Time24 latestAllowedEnd = blockStart.copy();
+                latestAllowedEnd.subtractMinutes(minGap);
 
-                Time24 earliestAllowedEnd = blockEnd.copy();
-                earliestAllowedEnd.addMinutes(minGap);
+                Time24 earliestAllowedStart = blockEnd.copy();
+                earliestAllowedStart.addMinutes(minGap);
 
-                if (!(end.isBefore(latestAllowedStart) || start.isAfter(earliestAllowedEnd))) {
+                if (!(end.isBefore(latestAllowedEnd) || start.isAfter(earliestAllowedStart))) {
                     fits = false;
                     break;
                 }

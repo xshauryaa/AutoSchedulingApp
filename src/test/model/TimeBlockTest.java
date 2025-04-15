@@ -40,7 +40,7 @@ public class TimeBlockTest {
         assertEquals(new Time24(1000), timeBlock.getStartTime());
         assertEquals(new Time24(1100), timeBlock.getEndTime());
         assertEquals(60, timeBlock.getDuration());
-        assertEquals("fluid", timeBlock.getType());
+        assertEquals("flexible", timeBlock.getType());
     }
     
     @Test

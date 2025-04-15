@@ -2,13 +2,14 @@ package model;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 import model.exceptions.EventConflictException;
 import model.exceptions.WorkingLimitExceededException;
 
 public class WeekSchedule implements Iterable<DaySchedule> {
     
-    private HashMap<String, DaySchedule> weekSchedule;
+    private LinkedHashMap<String, DaySchedule> weekSchedule;
     public static String[] DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     /**
@@ -20,7 +21,7 @@ public class WeekSchedule implements Iterable<DaySchedule> {
      *          and given working hours limit
      */
     public WeekSchedule(int minGap, ScheduleDate day1Date, String day1Day, int workingHoursLimit) {
-        weekSchedule = new HashMap<String, DaySchedule>();
+        weekSchedule = new LinkedHashMap<String, DaySchedule>();
         initiateWeekSchedule(minGap, day1Date, day1Day, workingHoursLimit);
     }
 

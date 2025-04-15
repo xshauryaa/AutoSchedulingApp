@@ -3,19 +3,20 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Set;
 
 import model.exceptions.CircularDependencyException;
 
 public class EventDependencies {
     
-    private HashMap<Event, ArrayList<Event>> dependencies;
+    private LinkedHashMap<Event, ArrayList<Event>> dependencies;
 
     /**
      * EFFECTS: creates a new EventDependencies object.
      */
     public EventDependencies() {
-        dependencies = new HashMap<Event, ArrayList<Event>>();
+        dependencies = new LinkedHashMap<Event, ArrayList<Event>>();
     }
 
     /**

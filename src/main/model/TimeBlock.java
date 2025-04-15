@@ -37,7 +37,7 @@ public class TimeBlock {
         this.startTime = new Time24(startTime);
         this.endTime = new Time24(endTime);
         this.duration = event.getDuration();
-        this.type = "fluid";
+        this.type = "flexible";
     }
 
     /**
@@ -130,5 +130,16 @@ public class TimeBlock {
         }
         result += " (" + activityType + ")";
         return result;
+    }
+
+    /**
+     * @return UID for the time block in RFC-compliant format
+     */
+    public String getUID() {
+        String uid = String.format("%s-%s-%s@plannr.scheduler",
+                date.toString(),                     // e.g., 2025-04-06
+                startTime.toString(),                // e.g., 0930
+                name.replaceAll("\\s+", "_"));       // replace spaces in name
+        return uid.toLowerCase();                    // lowercase for consistency
     }
 }

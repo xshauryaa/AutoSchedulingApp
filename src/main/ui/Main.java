@@ -1,7 +1,6 @@
 package ui;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
+import ics_handler.ICSHandler;
 import model.ActivityType;
 import model.Break;
 import model.EventDependencies;
@@ -12,8 +11,6 @@ import model.ScheduleDate;
 import model.Scheduler;
 import model.WeekSchedule;
 import model.exceptions.CircularDependencyException;
-import model.exceptions.EventConflictException;
-import model.exceptions.WorkingLimitExceededException;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -114,5 +111,9 @@ public class Main {
         for (int i = 6; i < 13; i++) {
             System.out.println(weekSchedule.getScheduleForDay(WeekSchedule.DAYS[i % 7]));
         }
+
+        // Generate ICS file
+        String outputPath = "/Users/shauryathareja/Projects/AutoSchedulingApp/data/schedule.ics";
+        ICSHandler.getInstance().generateICS(weekSchedule, outputPath);
     }
 }
