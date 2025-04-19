@@ -78,6 +78,26 @@ public class WeekSchedule implements Iterable<DaySchedule> {
         weekSchedule.get(day).addEvent(event, startTime, endTime);
     }
 
+    public TimeBlock locateTimeBlockForEvent(Event event) {
+        String flag;
+        if (event instanceof RigidEvent) {
+            flag = "rigid";
+        } else if (event instanceof FlexibleEvent) {
+            flag = "flexible";
+        } else {
+            return null;
+        }
+        for (String day : DAYS) {
+            DaySchedule schedule = weekSchedule.get(day);
+            for (TimeBlock timeBlock : schedule) {
+                if (timeBlock.getName().equals(event.getName()) && timeBlock.getType().equals(flag)) {
+                    return timeBlock;
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * @param breakTime the break to add
      * MODIFIES: this

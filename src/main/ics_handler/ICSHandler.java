@@ -1,12 +1,8 @@
 package ics_handler;
 
-import model.FlexibleEvent;
-import model.RigidEvent;
-
 import java.io.FileWriter;
 import java.io.IOException;
 
-import model.Break;
 import model.TimeBlock;
 import model.ScheduleDate;
 import model.Time24;

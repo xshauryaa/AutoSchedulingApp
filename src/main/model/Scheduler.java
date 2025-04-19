@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -158,6 +157,9 @@ public class Scheduler {
                     }
                 }
             }
+            if (!scheduled.contains(event)) {
+                scheduleAfterDependencies((FlexibleEvent) event, ((FlexibleEvent) event).getDeadline(), scheduled, minGap, earliestStartTime, latestEndTime);
+            }
         }
 
         // Scheduling any leftover flexible events
@@ -180,9 +182,7 @@ public class Scheduler {
             }
         }
 
-        for (int i = 6; i >= 0; i--) {
-            String day = WeekSchedule.DAYS[i];
-            DaySchedule daySchedule = schedule.getScheduleForDay(day);
+        for (DaySchedule daySchedule : schedule) {
             ScheduleDate date = daySchedule.getDate();
 
             if (date.isAfter(beforeDate)) { continue; }
@@ -193,7 +193,39 @@ public class Scheduler {
 
             if (slot != null) {
                 try {
-                    FlexibleEvent event = (FlexibleEvent) dependency;
+                    daySchedule.addEvent(((FlexibleEvent) dependency), slot[0], slot[1]);
+                    scheduled.add(dependency);
+                    return;
+                } catch (EventConflictException e) {
+                    // not possible
+                } catch (WorkingLimitExceededException e) {
+                    continue;
+                }
+            }
+        }
+    }
+
+    private void scheduleAfterDependencies(FlexibleEvent event, ScheduleDate beforeDate, Set<Event> scheduled, int minGap, Time24 earliestStartTime, Time24 latestEndTime) {
+        ArrayList<Event> dependencies = eventDependencies.getDependenciesForEvent(event);
+        ScheduleDate afterDate = null;
+        if (dependencies != null) {
+            for (Event dep : dependencies) {
+                TimeBlock depBlock = schedule.locateTimeBlockForEvent(dep);
+                if (afterDate == null || depBlock.getDate().isAfter(afterDate)) {
+                    afterDate = depBlock.getDate();
+                }
+            }
+        }
+        for (DaySchedule daySchedule : schedule) {
+            ScheduleDate date = daySchedule.getDate();
+
+            if (date.isBefore(afterDate)) { continue;}
+            if (date.isAfter(beforeDate)) { continue; }
+
+            int[] slot = findAvailableSlot(daySchedule, event.getDuration(), earliestStartTime, latestEndTime, minGap);
+
+            if (slot != null) {
+                try {
                     daySchedule.addEvent(event, slot[0], slot[1]);
                     scheduled.add(event);
                     return;
