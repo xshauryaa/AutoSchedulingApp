@@ -70,7 +70,6 @@ public class SchedulerTest {
 
     @Test
     void testConstructor() {
-        assertNotNull(scheduler.getSchedule());
         assertEquals(0, scheduler.breaks.size());
         assertEquals(0, scheduler.repeatedBreaks.size());
         assertEquals(0, scheduler.rigidEvents.size());
@@ -149,9 +148,7 @@ public class SchedulerTest {
         }
         scheduler.setEventDependencies(eventDependencies);
 
-        scheduler.createSchedules(800, 1700);
-
-        WeekSchedule schedule = scheduler.getSchedule();
+        WeekSchedule schedule = scheduler.createSchedules("Earliest Fit", 800, 1700);
 
         // Checking for scheduled breaks 
         assertEquals(1, schedule.getScheduleForDay("Sunday").getBreaks().size());
@@ -181,31 +178,31 @@ public class SchedulerTest {
         assertTrue(schedule.getScheduleForDay("Friday").getEvents().contains(presentation));
 
         // Checking if dependencies were followed
-        assertTrue(checkDependencyFollowed(studyPrep, midterm));
-        assertTrue(checkDependencyFollowed(healthJournal, docAppt));
-        assertTrue(checkDependencyFollowed(researchNotes, slidesDraft));
-        assertTrue(checkDependencyFollowed(reportWriting, meeting));
-        assertTrue(checkDependencyFollowed(visualDesign, reportWriting));
-        assertTrue(checkDependencyFollowed(visualDesign, slidesDraft));
+        assertTrue(checkDependencyFollowed(studyPrep, midterm, schedule));
+        assertTrue(checkDependencyFollowed(healthJournal, docAppt, schedule));
+        assertTrue(checkDependencyFollowed(researchNotes, slidesDraft, schedule));
+        assertTrue(checkDependencyFollowed(reportWriting, meeting, schedule));
+        assertTrue(checkDependencyFollowed(visualDesign, reportWriting, schedule));
+        assertTrue(checkDependencyFollowed(visualDesign, slidesDraft, schedule));
 
         // Checking if deadlines were followed
-        assertTrue(getDateForEvent(studyPrep).isBefore(studyPrep.getDeadline()));
-        assertTrue(getDateForEvent(healthJournal).isBefore(healthJournal.getDeadline()));
-        assertTrue(!getDateForEvent(slidesDraft).isAfter(slidesDraft.getDeadline()));
-        assertTrue(getDateForEvent(researchNotes).isBefore(researchNotes.getDeadline()));
-        assertTrue(!getDateForEvent(dataCleanup).isAfter(dataCleanup.getDeadline()));
-        assertTrue(!getDateForEvent(weeklyPlanning).isAfter(weeklyPlanning.getDeadline()));
-        assertTrue(getDateForEvent(reportWriting).isBefore(reportWriting.getDeadline()));
-        assertTrue(getDateForEvent(visualDesign).isBefore(visualDesign.getDeadline()));
+        assertTrue(getDateForEvent(studyPrep, schedule).isBefore(studyPrep.getDeadline()));
+        assertTrue(getDateForEvent(healthJournal, schedule).isBefore(healthJournal.getDeadline()));
+        assertTrue(!getDateForEvent(slidesDraft, schedule).isAfter(slidesDraft.getDeadline()));
+        assertTrue(getDateForEvent(researchNotes, schedule).isBefore(researchNotes.getDeadline()));
+        assertTrue(!getDateForEvent(dataCleanup, schedule).isAfter(dataCleanup.getDeadline()));
+        assertTrue(!getDateForEvent(weeklyPlanning, schedule).isAfter(weeklyPlanning.getDeadline()));
+        assertTrue(getDateForEvent(reportWriting, schedule).isBefore(reportWriting.getDeadline()));
+        assertTrue(getDateForEvent(visualDesign, schedule).isBefore(visualDesign.getDeadline()));
     }
 
-    private boolean checkDependencyFollowed(Event dep, Event event) {
+    private boolean checkDependencyFollowed(Event dep, Event event, WeekSchedule schedule) {
         ScheduleDate depDate = null;
         ScheduleDate eventDate = null;
         Time24 depEndTime = null;
         Time24 eventStartTime = null;
 
-        for (DaySchedule daySched : scheduler.getSchedule()) {
+        for (DaySchedule daySched : schedule) {
             if (daySched.getEvents().contains(dep)) {
                 for (TimeBlock tb : daySched.getTimeBlocks()) {
                     if (tb.getName().equals(dep.getName()) && tb.getDuration() == dep.getDuration()) {
@@ -233,8 +230,8 @@ public class SchedulerTest {
         }
     }
 
-    private ScheduleDate getDateForEvent(Event event) {
-        for (DaySchedule daySched : scheduler.getSchedule()) {
+    private ScheduleDate getDateForEvent(Event event, WeekSchedule schedule) {
+        for (DaySchedule daySched : schedule) {
             if (daySched.getEvents().contains(event)) {
                 for (TimeBlock tb : daySched.getTimeBlocks()) {
                     if (tb.getName().equals(event.getName()) && tb.getDuration() == event.getDuration()) {
