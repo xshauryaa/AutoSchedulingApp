@@ -252,9 +252,11 @@ public class Scheduler {
                 
                 Time24 latestAllowedEnd = blockStart.copy();
                 latestAllowedEnd.subtractMinutes(minGap);
+                latestAllowedEnd.addMinutes(1);
 
                 Time24 earliestAllowedStart = blockEnd.copy();
                 earliestAllowedStart.addMinutes(minGap);
+                earliestAllowedStart.subtractMinutes(1);
 
                 if (!(end.isBefore(latestAllowedEnd) || start.isAfter(earliestAllowedStart))) {
                     fits = false;
