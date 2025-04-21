@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Represents a break in the schedule.
+ */
 public class Break {
     
     private int duration; // The duration of the break in minutes
@@ -7,10 +10,10 @@ public class Break {
     private Time24 endTime; // The end time of the break in 24-hour format
 
     /**
-     * Creates a new break with given duration.
      * @param duration the duration of the break in minutes
      * @param startTime the start time of the break in 24-hour format
      * @param endTime the end time of the break in 24-hour format
+     * EFFECTS: creates a new break with given duration.
      */
     public Break(int duration, int startTime, int endTime) {
         this.duration = duration;

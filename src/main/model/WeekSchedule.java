@@ -7,9 +7,12 @@ import java.util.LinkedHashMap;
 import model.exceptions.EventConflictException;
 import model.exceptions.WorkingLimitExceededException;
 
+/**
+ * Represents a week schedule that contains schedules for each day of the week.
+ */
 public class WeekSchedule implements Iterable<DaySchedule> {
     
-    private LinkedHashMap<String, DaySchedule> weekSchedule;
+    private LinkedHashMap<String, DaySchedule> weekSchedule; // the mapping of the schedule for each day of the week
     public static String[] DAYS = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     /**
@@ -78,6 +81,10 @@ public class WeekSchedule implements Iterable<DaySchedule> {
         weekSchedule.get(day).addEvent(event, startTime, endTime);
     }
 
+    /**
+     * @param event the event to be located
+     * @return the time block of the event if it exists, null otherwise
+     */
     public TimeBlock locateTimeBlockForEvent(Event event) {
         String flag;
         if (event instanceof RigidEvent) {
@@ -158,6 +165,11 @@ public class WeekSchedule implements Iterable<DaySchedule> {
 
     /**
      * Private helper to implement the week schedule correctly.
+     * @param minGap the gap between events
+     * @param day1Date the date of the first day in this week's schedule
+     * @param day1Day the day of the week on which the schedule starts
+     * @param workingHoursLimit the maximum working hours per day
+     * EFFECTS: creates a new week schedule with 7 days of the week, given minimum gap and working hours limit
      */
     private void initiateWeekSchedule(int minGap, ScheduleDate day1Date, String day1Day, int workingHoursLimit) {
         ScheduleDate currDate = day1Date;

@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * Represents a block of time in a schedule, which can be a rigid event,
+ * flexible event, or break. 
+ */
 public class TimeBlock {
     
     private String name; // name of the event

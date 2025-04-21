@@ -6,6 +6,9 @@ import java.util.Iterator;
 import model.exceptions.EventConflictException;
 import model.exceptions.WorkingLimitExceededException;
 
+/**
+ * Represents a schedule for a single day.
+ */
 public class DaySchedule implements Iterable<TimeBlock> {
     
     private String day; // day of the week
@@ -13,8 +16,8 @@ public class DaySchedule implements Iterable<TimeBlock> {
     private ArrayList<Event> events; // list of events
     private ArrayList<Break> breaks; // list of breaks
     private ArrayList<TimeBlock> timeBlocks; // list of time blocks
-    private int minGap; // minimum gap between events
-    private int workingHoursLimit; // maximum working hours per day
+    private int minGap; // minimum gap between events (in minutes)
+    private int workingHoursLimit; // maximum working hours per day 
 
     /**
      * REQUIRES: day is one of "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
@@ -231,11 +234,17 @@ public class DaySchedule implements Iterable<TimeBlock> {
         this.timeBlocks = sortedTimeBlocks;
     }    
 
+    /**
+     * @return an iterator over the time blocks in the schedule
+     */
     @Override
     public Iterator<TimeBlock> iterator() {
         return this.timeBlocks.iterator();
     }
 
+    /**
+     * @return a string representation of the day schedule
+     */
     @Override
     public String toString() {
         String result = "Day: " + this.day + "\n";

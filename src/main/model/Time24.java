@@ -127,6 +127,9 @@ public class Time24 {
         return Objects.hash(hour, minute);
     }
 
+    /**
+     * @return string representation of this Time24 object in "HH:MM" format
+     */
     @Override
     public String toString() {
         String minutePart = (minute < 10) ? "0" + minute : String.valueOf(minute);

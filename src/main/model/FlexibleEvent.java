@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * Represents a flexible event that has no fixed time, but instead 
+ * a priority and a deadline.
+ */
 public class FlexibleEvent extends Event {
     
     private Priority priority; // The priority of the event

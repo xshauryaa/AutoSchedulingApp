@@ -1,10 +1,30 @@
 package model;
 
+/**
+ * Represents an arbitrary scheduling strategy to be followed when 
+ * generating a schedule.
+ */
 public abstract class SchedulingStrategy {
 
+    /** 
+     * @param earliestStartTime the earliest start time of the schedule
+     * @param latestEndTime the latest end time of the schedule
+     * EFFECTS: generates a schedule for the week based on the given time range 
+     *          while following the earliest fit strategy
+     * @return the generated schedule
+     */
     public abstract WeekSchedule generateSchedule(int earliestStartTime, int latestEndTime);
 
-    public int[] findAvailableSlot(DaySchedule daySchedule, int duration, Time24 earliestStartTime, Time24 latestEndTime, int minGap) {
+    /**
+     * REQUIRES: earliestStartTime < latestEndTime, both must be in 24-hour format
+     * @param daySchedule the schedule of the day to be checked
+     * @param duration the duration of the event to be scheduled
+     * @param earliestStartTime the earliest start time of the schedule
+     * @param latestEndTime the latest end time of the schedule
+     * @param minGap the minimum gap between two events
+     * @return the start and end time of the available slot in 24-hour format
+     */
+    protected int[] findAvailableSlot(DaySchedule daySchedule, int duration, Time24 earliestStartTime, Time24 latestEndTime, int minGap) {
         Time24 start = earliestStartTime.copy();
         Time24 end = earliestStartTime.copy();
         end.addMinutes(duration);

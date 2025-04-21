@@ -3,17 +3,20 @@ package model;
 import java.util.List;
 import java.util.Arrays;
 
+/**
+ * Represents a date in the format of day-month-year.
+ */
 public class ScheduleDate {
 
-    private int date;
-    private int month;
-    private int year;
+    private int date; // the day/date
+    private int month; // the month
+    private int year; // the year
 
     /**
-     * Creates a new date with givne date, month, and year.
-     * @param date
-     * @param month
-     * @param year
+     * @param date the day/date
+     * @param month the month
+     * @param year the year
+     * EFFECTS: creates a new date with givne date, month, and year.
      */
     public ScheduleDate(int date, int month, int year) {
         this.date = date;
@@ -165,6 +168,9 @@ public class ScheduleDate {
         }
     } 
 
+    /**
+     * @return the hash code of this date
+     */
     @Override
     public int hashCode() {
         return java.util.Objects.hash(date, month, year);

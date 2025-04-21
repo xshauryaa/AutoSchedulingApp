@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Represents a rigid event that has a fixed date and time of occurrence.
+ */
 public class RigidEvent extends Event {
     
     private ScheduleDate date; // The date of the event

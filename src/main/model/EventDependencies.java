@@ -8,9 +8,12 @@ import java.util.Set;
 
 import model.exceptions.CircularDependencyException;
 
+/**
+ * Represents a collection of events mapped to their dependencies.
+ */
 public class EventDependencies {
     
-    private LinkedHashMap<Event, ArrayList<Event>> dependencies;
+    private LinkedHashMap<Event, ArrayList<Event>> dependencies; // map of events to their dependencies
 
     /**
      * EFFECTS: creates a new EventDependencies object.

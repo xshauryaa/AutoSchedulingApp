@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * Represents a scheduler that manages the scheduling of events and breaks.
+ */
 public class Scheduler {
 
-    ScheduleDate firstDate;
-    String firstDay;
-    int minGap;
-    int workingHoursLimit;
+    private ScheduleDate firstDate; // the date of the first day of the week to be scheduled
+    private String firstDay; // the day of the week corresponding to the date
+    private int minGap; // the minimum gap between events
+    private int workingHoursLimit; // the maximum working hours per day
 
-    protected ArrayList<Entry<String, Break>> breaks;
-    protected ArrayList<Break> repeatedBreaks;
-    protected ArrayList<RigidEvent> rigidEvents;
-    protected ArrayList<FlexibleEvent> flexibleEvents;
-    protected EventDependencies eventDependencies;
+    protected ArrayList<Entry<String, Break>> breaks; // list of breaks mapped to their days
+    protected ArrayList<Break> repeatedBreaks; // list of repeated breaks
+    protected ArrayList<RigidEvent> rigidEvents; // list of rigid events
+    protected ArrayList<FlexibleEvent> flexibleEvents; // list of flexible events
+    protected EventDependencies eventDependencies; // the event dependencies mapping
 
     /**
      * @param date the date of the first day of the week to be scheduled
@@ -85,20 +88,14 @@ public class Scheduler {
     public void setEventDependencies(EventDependencies dependencies) {
         this.eventDependencies = dependencies;
     }
-    
-    /**
-     * @return the earliest fit schedule
-     */
-    // public WeekSchedule getSchedule() {
-    //     return this.schedule;
-    // }
 
     /**
      * REQUIRES: earliestStartTime < latestEndTime, both must be in 24-hour format
+     * @param strategy the scheduling strategy to be used
      * @param earliestStartTime the earliest time at which the schedule can start
      * @param latestEndTime the latest time at which the schedule can end
      * MODIFIES: this
-     * EFFECTS: creates the schedules for the week based on the given constraints
+     * @return the generated schedule based on the given strategy
      */
     public WeekSchedule createSchedules(String strategy, int earliestStartTime, int latestEndTime) {
         if (strategy.equals("Earliest Fit")) {
