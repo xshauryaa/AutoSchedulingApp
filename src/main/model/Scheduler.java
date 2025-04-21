@@ -98,10 +98,16 @@ public class Scheduler {
      * @return the generated schedule based on the given strategy
      */
     public WeekSchedule createSchedules(String strategy, int earliestStartTime, int latestEndTime) {
-        if (strategy.equals("Earliest Fit")) {
-            EarliestFitStrategy earliestFitStrategy = new EarliestFitStrategy(this, firstDate, firstDay, minGap, workingHoursLimit);
-            WeekSchedule schedule = earliestFitStrategy.generateSchedule(earliestStartTime, latestEndTime);
-            return schedule;
+        switch (strategy) {
+            case "Earliest Fit":
+                EarliestFitStrategy earliestFitStrategy = new EarliestFitStrategy(this, firstDate, firstDay, minGap, workingHoursLimit);
+                WeekSchedule schedule = earliestFitStrategy.generateSchedule(earliestStartTime, latestEndTime);
+                return schedule;
+
+            case "Balanced Work":
+                BalancedWorkStrategy balancedWorkStrategy = new BalancedWorkStrategy(this, firstDate, firstDay, minGap, workingHoursLimit);
+                WeekSchedule balancedSchedule = balancedWorkStrategy.generateSchedule(earliestStartTime, latestEndTime);
+                return balancedSchedule;
         }
 
         return null;

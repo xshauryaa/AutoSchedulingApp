@@ -10,12 +10,12 @@ import model.exceptions.WorkingLimitExceededException;
 
 /**
  * Represents a scheduling strategy type that schedules events in the 
- * earliest available time slots to ensure that all events are scheduled
- * as early as possible.
+ * most balanced way possible, picking time slots on days that have the
+ * least workload allotted while scheduling.
  */
-public class EarliestFitStrategy extends SchedulingStrategy {
+public class BalancedWorkStrategy extends SchedulingStrategy {
 
-    private WeekSchedule earliestFitSchedule; // the earliest fit schedule for the week
+    private WeekSchedule balancedWorkSchedule; // the balanced work schedule for the week
 
     protected ArrayList<Entry<String, Break>> breaks; // list of breaks paired with their respective days
     protected ArrayList<Break> repeatedBreaks; // list of repeated breaks
@@ -29,16 +29,16 @@ public class EarliestFitStrategy extends SchedulingStrategy {
      * @param firstDay the first day of the week being scheduled
      * @param minGap the minimum gap between events (in minutes)
      * @param workingHoursLimit the maximum working hours per day
-     * EFFECTS: constructs a new EarliestFitStrategy object with the given parameters
+     * EFFECTS: constructs a new BalancedWorkStrategy object with the given parameters
      */
-    public EarliestFitStrategy(Scheduler scheduler, ScheduleDate firstDate, String firstDay, int minGap, int workingHoursLimit) {
+    public BalancedWorkStrategy(Scheduler scheduler, ScheduleDate firstDate, String firstDay, int minGap, int workingHoursLimit) {
         this.breaks = scheduler.breaks;
         this.repeatedBreaks = scheduler.repeatedBreaks;
         this.rigidEvents = scheduler.rigidEvents;
         this.flexibleEvents = scheduler.flexibleEvents;
         this.eventDependencies = scheduler.eventDependencies;
 
-        earliestFitSchedule = new WeekSchedule(minGap, firstDate, firstDay, workingHoursLimit);
+        balancedWorkSchedule = new WeekSchedule(minGap, firstDate, firstDay, workingHoursLimit);
     }
 
     /**
@@ -54,7 +54,7 @@ public class EarliestFitStrategy extends SchedulingStrategy {
         Time24 endTime = new Time24(latestEndTime);
         scheduleBreaks();
         scheduleEvents(startTime, endTime);
-        return earliestFitSchedule;
+        return balancedWorkSchedule;
     }
 
     /**
@@ -65,11 +65,11 @@ public class EarliestFitStrategy extends SchedulingStrategy {
         for (Entry<String, Break> entry : breaks) {
             String day = entry.getKey();
             Break breakTime = entry.getValue();
-            earliestFitSchedule.addBreak(day, breakTime);
+            balancedWorkSchedule.addBreak(day, breakTime);
         }
 
         for (Break breakTime : repeatedBreaks) {
-            earliestFitSchedule.addBreakToFullWeek(breakTime);
+            balancedWorkSchedule.addBreakToFullWeek(breakTime);
         }
     }
 
@@ -82,12 +82,12 @@ public class EarliestFitStrategy extends SchedulingStrategy {
      */
     private void scheduleEvents(Time24 earliestStartTime, Time24 latestEndTime) {
         Set<Event> scheduled = new LinkedHashSet<>();
-        int minGap = earliestFitSchedule.getScheduleForDay("Monday").getMinGap();
+        int minGap = balancedWorkSchedule.getScheduleForDay("Monday").getMinGap();
 
         // Scheduling all rigid events
         for (RigidEvent event : rigidEvents) {
-            String day = earliestFitSchedule.getDayFromDate(event.getDate());
-            earliestFitSchedule.addEvent(day, event);
+            String day = balancedWorkSchedule.getDayFromDate(event.getDate());
+            balancedWorkSchedule.addEvent(day, event);
             scheduled.add(event);
         }
 
@@ -145,7 +145,8 @@ public class EarliestFitStrategy extends SchedulingStrategy {
             }
         }
 
-        for (DaySchedule daySchedule : earliestFitSchedule) {
+        ArrayList<DaySchedule> daysWithLeastLoad = getDaysSortedByLoad();
+        for (DaySchedule daySchedule : daysWithLeastLoad) {
             ScheduleDate date = daySchedule.getDate();
 
             if (date.isAfter(beforeDate)) { continue; }
@@ -185,15 +186,15 @@ public class EarliestFitStrategy extends SchedulingStrategy {
         Time24 earliestTimeOnDate = null;
         if (dependencies != null) {
             for (Event dep : dependencies) {
-                TimeBlock depBlock = earliestFitSchedule.locateTimeBlockForEvent(dep);
+                TimeBlock depBlock = balancedWorkSchedule.locateTimeBlockForEvent(dep);
                 if (afterDate == null || depBlock.getDate().isAfter(afterDate)) {
                     afterDate = depBlock.getDate();
                     earliestTimeOnDate = depBlock.getEndTime();
                 }
             }
         }
-
-        for (DaySchedule daySchedule : earliestFitSchedule) {
+        ArrayList<DaySchedule> daysWithLoads = getDaysSortedByLoad();
+        for (DaySchedule daySchedule : daysWithLoads) {
             ScheduleDate date = daySchedule.getDate();
 
             if (date.isBefore(afterDate)) { continue; }
@@ -215,4 +216,14 @@ public class EarliestFitStrategy extends SchedulingStrategy {
             }
         }
     }
+
+    /**
+     * @return the list of day schedules sorted by total working hours in increasing order
+     */
+    private ArrayList<DaySchedule> getDaysSortedByLoad() {
+        ArrayList<DaySchedule> sorted = new ArrayList<DaySchedule>(balancedWorkSchedule.getWeekSchedule().values()); // Assuming an iterable getter
+        sorted.sort((d1, d2) -> Integer.compare(d1.calculateWorkingHours(), d2.calculateWorkingHours()));
+        return sorted;
+    }
+    
 }

@@ -108,24 +108,24 @@ public class Main {
         // Dependencies
         EventDependencies deps = new EventDependencies();
         try {
-            deps.addDependency(midterm, study);
-            deps.addDependency(checkup, journal);
-            deps.addDependency(slides, notes);
-            deps.addDependency(slides, design);
-            deps.addDependency(report, design);
-            deps.addDependency(meeting, report);
-            deps.addDependency(notes, proof);
-            deps.addDependency(proof, essay);
-            deps.addDependency(plan, gifts);
-            deps.addDependency(gifts, checklist);
-            deps.addDependency(report, budget);
-            deps.addDependency(meeting, emails);
+            deps.addDependency(midterm, study);                  // Math Midterm ← Study Math Chapters
+            deps.addDependency(journal, checkup);                // Fill Health Journal ← Physio Checkup
+            deps.addDependency(notes, slides);                   // Write Research Notes ← Slide Draft
+            deps.addDependency(proof, notes);                    // Proofread Notes ← Write Research Notes
+            deps.addDependency(essay, proof);                    // Reflective Essay ← Proofread Notes
+            deps.addDependency(design, slides);                  // Design Mockups ← Slide Draft
+            deps.addDependency(design, report);                  // Design Mockups ← Report Draft
+            deps.addDependency(report, meeting);                 // Report Draft ← Staff Meeting
+            deps.addDependency(budget, report);                  // Finalize Budget ← Report Draft
+            deps.addDependency(emails, meeting);                 // Email Follow-Ups ← Staff Meeting
+            deps.addDependency(gifts, plan);                     // Buy Gifts ← Weekly Planning
+            deps.addDependency(checklist, gifts);                // Packing Checklist ← Buy Gifts
         } catch (CircularDependencyException e) {
             e.printStackTrace();
         }
         scheduler.setEventDependencies(deps);
 
-        WeekSchedule weekSchedule = scheduler.createSchedules("Earliest Fit", 800, 1700);
+        WeekSchedule weekSchedule = scheduler.createSchedules("Balanced Work", 800, 1700);
 
         for (int i = 6; i < 13; i++) {
             System.out.println(weekSchedule.getScheduleForDay(WeekSchedule.DAYS[i % 7]));
