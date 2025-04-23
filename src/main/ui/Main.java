@@ -56,7 +56,7 @@ public class Main {
         FlexibleEvent proof = new FlexibleEvent("Proofread Notes", ActivityType.EDUCATION, 30, Priority.LOW, new ScheduleDate(11, 4, 2025));
         FlexibleEvent gifts = new FlexibleEvent("Buy Gifts", ActivityType.PERSONAL, 45, Priority.LOW, new ScheduleDate(12, 4, 2025));
         FlexibleEvent essay = new FlexibleEvent("Reflective Essay", ActivityType.EDUCATION, 60, Priority.HIGH, new ScheduleDate(12, 4, 2025));
-        FlexibleEvent meditate = new FlexibleEvent("Meditation Session", ActivityType.PERSONAL, 30, Priority.LOW, new ScheduleDate(9, 4, 2025));
+        FlexibleEvent meditate = new FlexibleEvent("Meditation Session", ActivityType.PERSONAL, 30, Priority.LOW, new ScheduleDate(6, 4, 2025));
         FlexibleEvent cases = new FlexibleEvent("Read Case Studies", ActivityType.EDUCATION, 60, Priority.MEDIUM, new ScheduleDate(9, 4, 2025));
         FlexibleEvent budget = new FlexibleEvent("Finalize Budget", ActivityType.WORK, 40, Priority.MEDIUM, new ScheduleDate(11, 4, 2025));
         FlexibleEvent emails = new FlexibleEvent("Email Follow-Ups", ActivityType.WORK, 30, Priority.LOW, new ScheduleDate(10, 4, 2025));
@@ -125,7 +125,7 @@ public class Main {
         }
         scheduler.setEventDependencies(deps);
 
-        WeekSchedule weekSchedule = scheduler.createSchedules("Balanced Work", 800, 1700);
+        WeekSchedule weekSchedule = scheduler.createSchedules("Deadline Oriented", 800, 1700);
 
         for (int i = 6; i < 13; i++) {
             System.out.println(weekSchedule.getScheduleForDay(WeekSchedule.DAYS[i % 7]));

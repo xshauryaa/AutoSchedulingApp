@@ -108,6 +108,10 @@ public class Scheduler {
                 BalancedWorkStrategy balancedWorkStrategy = new BalancedWorkStrategy(this, firstDate, firstDay, minGap, workingHoursLimit);
                 WeekSchedule balancedSchedule = balancedWorkStrategy.generateSchedule(earliestStartTime, latestEndTime);
                 return balancedSchedule;
+            case "Deadline Oriented":
+                DeadlineOrientedStrategy deadlineOrientedStrategy = new DeadlineOrientedStrategy(this, firstDate, firstDay, minGap, workingHoursLimit);
+                WeekSchedule deadlineSchedule = deadlineOrientedStrategy.generateSchedule(earliestStartTime, latestEndTime);
+                return deadlineSchedule;
         }
 
         return null;
