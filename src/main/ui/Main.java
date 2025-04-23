@@ -125,14 +125,18 @@ public class Main {
         }
         scheduler.setEventDependencies(deps);
 
-        WeekSchedule weekSchedule = scheduler.createSchedules("Deadline Oriented", 800, 1700);
-
-        for (int i = 6; i < 13; i++) {
-            System.out.println(weekSchedule.getScheduleForDay(WeekSchedule.DAYS[i % 7]));
-        }
+        WeekSchedule earliestFitSchedule = scheduler.createSchedules("Earliest Fit", 800, 1700);
+        WeekSchedule balancedWorkSchedule = scheduler.createSchedules("Balanced Work", 800, 1700);
+        WeekSchedule deadlineOrientedSchedule = scheduler.createSchedules("Deadline Oriented", 800, 1700);
 
         // Generate ICS file
-        String outputPath = "/Users/shauryathareja/Projects/AutoSchedulingApp/data/schedule.ics";
-        ICSHandler.getInstance().generateICS(weekSchedule, outputPath);
+        String outputPath = "/Users/shauryathareja/Projects/AutoSchedulingApp/data/earliest-fit-schedule.ics";
+        ICSHandler.getInstance().generateICS(earliestFitSchedule, outputPath);
+
+        outputPath = "/Users/shauryathareja/Projects/AutoSchedulingApp/data/balanced-work-schedule.ics";
+        ICSHandler.getInstance().generateICS(balancedWorkSchedule, outputPath);
+
+        outputPath = "/Users/shauryathareja/Projects/AutoSchedulingApp/data/deadline-oriented-schedule.ics";
+        ICSHandler.getInstance().generateICS(deadlineOrientedSchedule, outputPath);
     }
 }
