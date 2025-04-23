@@ -11,7 +11,7 @@ public class Main {
         ScheduleDate date = new ScheduleDate(13, 4, 2025);
         String day1 = "Sunday";
         int minGap = 30;
-        int workingHoursLimit = 8;
+        int workingHoursLimit = 12;
 
         scheduler = new Scheduler(date, day1, minGap, workingHoursLimit);
 
@@ -108,21 +108,21 @@ public class Main {
         scheduler.setEventDependencies(deps);
 
         System.out.println("======== Earliest Fit ========");
-        WeekSchedule earliestFitSchedule = scheduler.createSchedules("Earliest Fit", 800, 1730);
+        WeekSchedule earliestFitSchedule = scheduler.createSchedules("Earliest Fit", 800, 2200);
         int total = 0;
         for (DaySchedule daySchedule : earliestFitSchedule) {
             total += daySchedule.getTimeBlocks().size();
         }
         System.out.println("Total time blocks: " + total);
         System.out.println("======== Balanced Work ========");
-        WeekSchedule balancedWorkSchedule = scheduler.createSchedules("Balanced Work", 800, 1730);
+        WeekSchedule balancedWorkSchedule = scheduler.createSchedules("Balanced Work", 800, 2200);
         total = 0;
         for (DaySchedule daySchedule : balancedWorkSchedule) {
             total += daySchedule.getTimeBlocks().size();
         }
         System.out.println("Total time blocks: " + total);
         System.out.println("======== Deadline Oriented ========");
-        WeekSchedule deadlineOrientedSchedule = scheduler.createSchedules("Deadline Oriented", 800, 1730);
+        WeekSchedule deadlineOrientedSchedule = scheduler.createSchedules("Deadline Oriented", 800, 2200);
         total = 0;
         for (DaySchedule daySchedule : deadlineOrientedSchedule) {
             total += daySchedule.getTimeBlocks().size();
@@ -142,6 +142,7 @@ public class Main {
 // import ics_handler.ICSHandler;
 // import model.ActivityType;
 // import model.Break;
+// import model.DaySchedule;
 // import model.EventDependencies;
 // import model.FlexibleEvent;
 // import model.Priority;
@@ -265,6 +266,7 @@ public class Main {
 //         scheduler.setEventDependencies(deps);
 
 //         WeekSchedule earliestFitSchedule = scheduler.createSchedules("Earliest Fit", 800, 1700);
+        
 //         WeekSchedule balancedWorkSchedule = scheduler.createSchedules("Balanced Work", 800, 1700);
 //         WeekSchedule deadlineOrientedSchedule = scheduler.createSchedules("Deadline Oriented", 800, 1700);
 
@@ -277,5 +279,21 @@ public class Main {
 
 //         outputPath = "/Users/shauryathareja/Projects/AutoSchedulingApp/data/deadline-oriented-schedule.ics";
 //         ICSHandler.getInstance().generateICS(deadlineOrientedSchedule, outputPath);
+        
+//         int totalTimeBlocks = 0;
+//         for (DaySchedule daySchedule : earliestFitSchedule) { // Assuming getDaySchedules() returns a list of DaySchedule objects
+//             totalTimeBlocks += daySchedule.getTimeBlocks().size(); // Assuming getTimeBlocks() exists in DaySchedule
+//         }
+//         System.out.println("Total time blocks in the earliest fit schedule: " + totalTimeBlocks);
+//         totalTimeBlocks = 0;
+//         for (DaySchedule daySchedule : balancedWorkSchedule) { // Assuming getDaySchedules() returns a list of DaySchedule objects
+//             totalTimeBlocks += daySchedule.getTimeBlocks().size(); // Assuming getTimeBlocks() exists in DaySchedule
+//         }
+//         System.out.println("Total time blocks in the balanced work schedule: " + totalTimeBlocks);
+//         totalTimeBlocks = 0;
+//         for (DaySchedule daySchedule : deadlineOrientedSchedule) { // Assuming getDaySchedules() returns a list of DaySchedule objects
+//             totalTimeBlocks += daySchedule.getTimeBlocks().size(); // Assuming getTimeBlocks() exists in DaySchedule
+//         }
+//         System.out.println("Total time blocks in the deadline oriented schedule: " + totalTimeBlocks);
 //     }
 // }

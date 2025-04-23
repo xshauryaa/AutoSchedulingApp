@@ -87,7 +87,8 @@ public class DeadlineOrientedStrategy extends SchedulingStrategy {
             scheduled.add(event);
         }
 
-        ArrayList<Event> topoSorted = topologicalSortOfEvents();
+        // Scheduling all other events respecting dependency structure
+        ArrayList<Event> topoSorted = topologicalSortOfEvents(eventDependencies, flexibleEvents);
         Collections.reverse(topoSorted);
         for (Event event : topoSorted) {
             if (!scheduled.contains(event)) {
@@ -95,17 +96,10 @@ public class DeadlineOrientedStrategy extends SchedulingStrategy {
                     scheduleEventLatest((FlexibleEvent) event, ((FlexibleEvent) event).getDeadline(), latestEndTime, scheduled, minGap, earliestStartTime, latestEndTime);
                     continue;
                 }
-                Object[] latestDateAndTime = getLatestDateAndTimeForDependency(event, latestEndTime);
+                Object[] latestDateAndTime = getLatestDateAndTimeForDependency(deadlineOrientedSchedule, eventDependencies, event, latestEndTime);
                 ScheduleDate lastDate = (ScheduleDate) latestDateAndTime[0];
                 Time24 lastTime = (Time24) latestDateAndTime[1];
                 scheduleEventLatest((FlexibleEvent) event, lastDate, lastTime, scheduled, minGap, earliestStartTime, latestEndTime);
-            }
-        }
-
-        // Scheduling any leftover flexible events
-        for (FlexibleEvent event : flexibleEvents) {
-            if (!scheduled.contains(event)) {
-                scheduleEventLatest(event, event.getDeadline(), latestEndTime, scheduled, minGap, earliestStartTime, latestEndTime);
             }
         }
     }
@@ -164,35 +158,6 @@ public class DeadlineOrientedStrategy extends SchedulingStrategy {
         }
 
         return true;
-    }
-
-    /**
-     * @param event the event to check the latest possible scheduling date and time for
-     * @return the latest date and time on which the event can be scheduled
-     */
-    private Object[] getLatestDateAndTimeForDependency(Event event, Time24 latestEndTime) {
-        ScheduleDate latestAllowedDate = (event instanceof RigidEvent) ? ((RigidEvent) event).getDate() : ((FlexibleEvent) event).getDeadline();
-        TimeBlock earliestScheduledDependent = null;
-        for (Entry<Event, ArrayList<Event>> entry : eventDependencies.getDependencies().entrySet()) {
-            if (entry.getValue().contains(event)) {
-                TimeBlock tb = deadlineOrientedSchedule.locateTimeBlockForEvent(entry.getKey());
-                ScheduleDate depDate = tb.getDate();
-                if (depDate.isBefore(latestAllowedDate) || depDate.equals(latestAllowedDate)) {
-                    latestAllowedDate = depDate;
-                    earliestScheduledDependent = tb;
-                } else if (depDate.equals(latestAllowedDate)) {
-                    if (tb.getStartTime().isBefore(earliestScheduledDependent.getStartTime())) {
-                        earliestScheduledDependent = tb;
-                    }
-                }
-            }
-        }
-
-        Object[] latestAllowedDateAndTime = new Object[2];
-        latestAllowedDateAndTime[0] = latestAllowedDate;
-        latestAllowedDateAndTime[1] = (earliestScheduledDependent != null) ? earliestScheduledDependent.getStartTime() : latestEndTime;
-
-        return latestAllowedDateAndTime;
     }
 
 

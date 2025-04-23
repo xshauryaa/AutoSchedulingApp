@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -8,8 +10,6 @@ import java.util.Set;
  * generating a schedule.
  */
 public abstract class SchedulingStrategy {
-
-    protected EventDependencies eventDependencies;
 
     /** 
      * @param earliestStartTime the earliest start time of the schedule
@@ -68,11 +68,55 @@ public abstract class SchedulingStrategy {
     }
 
     /**
-     * @return a topologically sorted list of all the events based on their 
-     * dependencies using Kahn's Algorithm
+     * @param event the event to check the latest possible scheduling date and time for
+     * @return the latest date and time on which the event can be scheduled
      */
-    protected ArrayList<Event> topologicalSortOfEvents() {
-        return null; // TODO
+    protected Object[] getLatestDateAndTimeForDependency(WeekSchedule schedule, EventDependencies eventDependencies, Event event, Time24 latestEndTime) {
+        ScheduleDate latestAllowedDate = (event instanceof RigidEvent) ? ((RigidEvent) event).getDate() : ((FlexibleEvent) event).getDeadline();
+        TimeBlock earliestScheduledDependent = null;
+        for (Entry<Event, ArrayList<Event>> entry : eventDependencies.getDependencies().entrySet()) {
+            if (entry.getValue().contains(event)) {
+                TimeBlock tb = schedule.locateTimeBlockForEvent(entry.getKey());
+                ScheduleDate depDate = tb.getDate();
+                if (depDate.isBefore(latestAllowedDate) || depDate.equals(latestAllowedDate)) {
+                    latestAllowedDate = depDate;
+                    earliestScheduledDependent = tb;
+                } else if (depDate.equals(latestAllowedDate)) {
+                    if (tb.getStartTime().isBefore(earliestScheduledDependent.getStartTime())) {
+                        earliestScheduledDependent = tb;
+                    }
+                }
+            }
+        }
+
+        Object[] latestAllowedDateAndTime = new Object[2];
+        latestAllowedDateAndTime[0] = latestAllowedDate;
+        latestAllowedDateAndTime[1] = (earliestScheduledDependent != null) ? earliestScheduledDependent.getStartTime() : latestEndTime;
+
+        return latestAllowedDateAndTime;
+    }
+
+    /**
+     * @return a topologically sorted list of all the events based on their 
+     * dependencies
+     */
+    protected ArrayList<Event> topologicalSortOfEvents(EventDependencies eventDependencies, ArrayList<FlexibleEvent> flexibleEvents) {
+        ArrayList<Event> sorted = new ArrayList<>();
+        Set<Event> visited = new HashSet<>();
+
+        for (Event e : eventDependencies.getDependencies().keySet()) {
+            dfs(e, visited, sorted, eventDependencies);
+        }
+
+        ArrayList<Event> topologicallySorted = new ArrayList<>();
+        for (FlexibleEvent event : flexibleEvents) {
+            if (!sorted.contains(event)) {
+                topologicallySorted.add(event);
+            }
+        }
+
+        topologicallySorted.addAll(sorted);
+        return topologicallySorted;
     };
 
     /**
@@ -81,14 +125,14 @@ public abstract class SchedulingStrategy {
      * @param sorted the list of sorted events
      * EFFECTS: performs a depth-first search on the event dependencies
      */
-    private void dfs(Event current, Set<Event> visited, ArrayList<Event> sorted) {
+    private void dfs(Event current, Set<Event> visited, ArrayList<Event> sorted, EventDependencies eventDependencies) {
         if (visited.contains(current)) return;
 
         visited.add(current);
         ArrayList<Event> dependencies = eventDependencies.getDependenciesForEvent(current);
         if (dependencies != null) {
             for (Event dep : dependencies) {
-                dfs(dep, visited, sorted);
+                dfs(dep, visited, sorted, eventDependencies);
             }
         }
 

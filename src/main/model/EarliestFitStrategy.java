@@ -91,7 +91,8 @@ public class EarliestFitStrategy extends SchedulingStrategy {
             scheduled.add(event);
         }
 
-        ArrayList<Event> topoSorted = topologicalSortOfEvents();
+        // Scheduling all other events respecting dependency structure
+        ArrayList<Event> topoSorted = topologicalSortOfEvents(eventDependencies, flexibleEvents);
         for (Event event : topoSorted) {
             if (!scheduled.contains(event)) {
                 if (eventDependencies.getDependenciesForEvent(event) == null) {
@@ -99,13 +100,6 @@ public class EarliestFitStrategy extends SchedulingStrategy {
                 } else {
                     scheduleAfterDependencies((FlexibleEvent) event, ((FlexibleEvent) event).getDeadline(), scheduled, minGap, earliestStartTime, latestEndTime);
                 }
-            }
-        }
-
-        // Scheduling any leftover flexible events
-        for (FlexibleEvent event : flexibleEvents) {
-            if (!scheduled.contains(event)) {
-                scheduleDependency(event, event.getDeadline(), latestEndTime, scheduled, minGap, earliestStartTime, latestEndTime);
             }
         }
     }

@@ -91,7 +91,8 @@ public class BalancedWorkStrategy extends SchedulingStrategy {
             scheduled.add(event);
         }
 
-        ArrayList<Event> topoSorted = topologicalSortOfEvents();
+        // Scheduling all other events respecting dependency structure
+        ArrayList<Event> topoSorted = topologicalSortOfEvents(eventDependencies, flexibleEvents);
         for (Event event : topoSorted) {
             if (!scheduled.contains(event)) {
                 if (eventDependencies.getDependenciesForEvent(event) == null) {
@@ -102,11 +103,15 @@ public class BalancedWorkStrategy extends SchedulingStrategy {
             }
         }
 
-        // Scheduling any leftover flexible events
-        for (FlexibleEvent event : flexibleEvents) {
+        // Printing out all events that were not scheduled
+        ArrayList<Event> unscheduledEvents = new ArrayList<>();
+        for (Event event : flexibleEvents) {
             if (!scheduled.contains(event)) {
-                scheduleDependency(event, event.getDeadline(), latestEndTime, scheduled, minGap, earliestStartTime, latestEndTime);
+                unscheduledEvents.add(event);
             }
+        }
+        if (!unscheduledEvents.isEmpty()) {
+            System.out.println("Unscheduled events: " + unscheduledEvents);
         }
     }
 
