@@ -1,10 +1,15 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 /**
  * Represents an arbitrary scheduling strategy to be followed when 
  * generating a schedule.
  */
 public abstract class SchedulingStrategy {
+
+    protected EventDependencies eventDependencies;
 
     /** 
      * @param earliestStartTime the earliest start time of the schedule
@@ -60,5 +65,33 @@ public abstract class SchedulingStrategy {
         }
 
         return null;
+    }
+
+    /**
+     * @return a topologically sorted list of all the events based on their 
+     * dependencies using Kahn's Algorithm
+     */
+    protected ArrayList<Event> topologicalSortOfEvents() {
+        return null; // TODO
+    };
+
+    /**
+     * @param current the current event being visited
+     * @param visited the set of already visited events
+     * @param sorted the list of sorted events
+     * EFFECTS: performs a depth-first search on the event dependencies
+     */
+    private void dfs(Event current, Set<Event> visited, ArrayList<Event> sorted) {
+        if (visited.contains(current)) return;
+
+        visited.add(current);
+        ArrayList<Event> dependencies = eventDependencies.getDependenciesForEvent(current);
+        if (dependencies != null) {
+            for (Event dep : dependencies) {
+                dfs(dep, visited, sorted);
+            }
+        }
+
+        sorted.add(current);
     }
 }

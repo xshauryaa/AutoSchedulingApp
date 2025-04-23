@@ -91,25 +91,14 @@ public class EarliestFitStrategy extends SchedulingStrategy {
             scheduled.add(event);
         }
 
-        // Scheduling dependencies
-        for (Event event : eventDependencies.getDependencies().keySet()) {
-            ArrayList<Event> dependencies = eventDependencies.getDependenciesForEvent(event);
-            if (dependencies != null) {
-                for (Event dep : dependencies) {
-                    if (!scheduled.contains(dep)) {
-                        ScheduleDate date = (event instanceof RigidEvent)
-                            ? ((RigidEvent) event).getDate()
-                            : ((FlexibleEvent) event).getDeadline();
-                        Time24 time = (event instanceof RigidEvent)
-                            ? ((RigidEvent) event).getStartTime()
-                            : latestEndTime;
-        
-                        scheduleDependency(dep, date, time, scheduled, minGap, earliestStartTime, latestEndTime);
-                    }
-                }
-            }
+        ArrayList<Event> topoSorted = topologicalSortOfEvents();
+        for (Event event : topoSorted) {
             if (!scheduled.contains(event)) {
-                scheduleAfterDependencies((FlexibleEvent) event, ((FlexibleEvent) event).getDeadline(), scheduled, minGap, earliestStartTime, latestEndTime);
+                if (eventDependencies.getDependenciesForEvent(event) == null) {
+                    scheduleDependency(event, ((FlexibleEvent) event).getDeadline(), latestEndTime, scheduled, minGap, earliestStartTime, latestEndTime);
+                } else {
+                    scheduleAfterDependencies((FlexibleEvent) event, ((FlexibleEvent) event).getDeadline(), scheduled, minGap, earliestStartTime, latestEndTime);
+                }
             }
         }
 
@@ -214,5 +203,5 @@ public class EarliestFitStrategy extends SchedulingStrategy {
                 }
             }
         }
-    }
+    }  
 }

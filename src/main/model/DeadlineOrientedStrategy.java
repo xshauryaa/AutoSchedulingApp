@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -88,7 +87,8 @@ public class DeadlineOrientedStrategy extends SchedulingStrategy {
             scheduled.add(event);
         }
 
-        ArrayList<Event> topoSorted = topologicalSort();
+        ArrayList<Event> topoSorted = topologicalSortOfEvents();
+        Collections.reverse(topoSorted);
         for (Event event : topoSorted) {
             if (!scheduled.contains(event)) {
                 if (isNotADependency((FlexibleEvent) event)) {
@@ -234,40 +234,4 @@ public class DeadlineOrientedStrategy extends SchedulingStrategy {
 
         return null;
     }
-
-    /**
-     * @return a topologically sorted list of events from the DAG of dependencies
-     */
-    private ArrayList<Event> topologicalSort() {
-        ArrayList<Event> sorted = new ArrayList<>();
-        Set<Event> visited = new HashSet<>();
-
-        for (Event e : eventDependencies.getDependencies().keySet()) {
-            dfs(e, visited, sorted);
-        }
-
-        Collections.reverse(sorted); // Because we want to schedule dependents first
-        return sorted;
-    }
-
-    /**
-     * @param current the current event being visited
-     * @param visited the set of already visited events
-     * @param sorted the list of sorted events
-     * EFFECTS: performs a depth-first search on the event dependencies
-     */
-    private void dfs(Event current, Set<Event> visited, ArrayList<Event> sorted) {
-        if (visited.contains(current)) return;
-
-        visited.add(current);
-        ArrayList<Event> dependencies = eventDependencies.getDependenciesForEvent(current);
-        if (dependencies != null) {
-            for (Event dep : dependencies) {
-                dfs(dep, visited, sorted);
-            }
-        }
-
-        sorted.add(current);
-    }
-
 }
