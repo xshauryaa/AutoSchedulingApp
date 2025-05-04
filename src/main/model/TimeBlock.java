@@ -12,6 +12,7 @@ public class TimeBlock {
     private Time24 startTime; // start time of the time block in 24-hour format
     private Time24 endTime; // end time of the time block in 24-hour format
     private int duration; // duration of the time block
+    private boolean isCompleted; // whether the time block is completed
     private String type; // representation of whether time block is for a rigid event, fluid event, or break
 
     /**
@@ -25,6 +26,7 @@ public class TimeBlock {
         this.startTime = event.getStartTime();
         this.endTime = event.getEndTime();
         this.duration = event.getDuration();
+        this.isCompleted = false;
         this.type = "rigid";
     }
 
@@ -41,6 +43,7 @@ public class TimeBlock {
         this.startTime = new Time24(startTime);
         this.endTime = new Time24(endTime);
         this.duration = event.getDuration();
+        this.isCompleted = false;
         this.type = "flexible";
     }
 
@@ -55,6 +58,7 @@ public class TimeBlock {
         this.startTime = breakTime.getStartTime();
         this.endTime = breakTime.getEndTime();
         this.duration = breakTime.getDuration();
+        this.isCompleted = true;
         this.type = "break";
     }
 
@@ -105,6 +109,20 @@ public class TimeBlock {
      */
     public int getDuration() {
         return this.duration;
+    }
+
+    /**
+     * @return true if the time block is completed, false otherwise
+     */
+    public boolean isCompleted() {
+        return this.isCompleted;
+    }
+
+    /**
+     * @param completed the completion status of the time block
+     */
+    public void setCompleted(boolean completed) {
+        this.isCompleted = completed;
     }
 
     /**
